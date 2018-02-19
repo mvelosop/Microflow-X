@@ -5,7 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="App\Services\" />
+    <Folder Include="Core\Commands\" />
+    <Folder Include="Core\Services\" />
     <Folder Include="Core\Repositories\" />
   </ItemGroup>
 
