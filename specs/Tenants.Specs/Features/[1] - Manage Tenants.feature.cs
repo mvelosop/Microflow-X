@@ -120,8 +120,8 @@ this.ScenarioSetup(scenarioInfo);
         [Xunit.TheoryAttribute(DisplayName="Scenario - 1.2 - Avoid duplicate tenant name")]
         [Xunit.TraitAttribute("FeatureTitle", "[1] - Manage Tenants")]
         [Xunit.TraitAttribute("Description", "Scenario - 1.2 - Avoid duplicate tenant name")]
-        [Xunit.InlineDataAttribute("tenant-c@server.com", "Tenant C", new string[0])]
-        [Xunit.InlineDataAttribute("tenant-d@server.com", "Tenant D", new string[0])]
+        [Xunit.InlineDataAttribute("tenant-c@server.com", "Unique Tenant C", new string[0])]
+        [Xunit.InlineDataAttribute("tenant-d@server.com", "Unique Tenant D", new string[0])]
         public virtual void Scenario_1_2_AvoidDuplicateTenantName(string email, string name, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Scenario - 1.2 - Avoid duplicate tenant name", exampleTags);

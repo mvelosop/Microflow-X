@@ -27,6 +27,6 @@ Scenario Outline: Scenario - 1.2 - Avoid duplicate tenant name
     Then I can't add another tenant "<Email>", "<Name>"
 
     Examples: 
-        | Email               | Name     |
-        | tenant-c@server.com | Tenant C |
-        | tenant-d@server.com | Tenant D |
+        | Email               | Name            |
+        | tenant-c@server.com | Unique Tenant C |
+        | tenant-d@server.com | Unique Tenant D |
