@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Domion.Data.Base;
 using Domion.Data.Extensions;
@@ -7,31 +8,28 @@ using Tenants.Core.Model;
 
 namespace Tenants.Data.Extensions
 {
-    // 6-5. Add TenantRepositoryExtensions
-    //------------------------------------
-
     public static class TenantRepositoryExtensions
     {
-        public static async Task<Tenant> FindByIdAsync(this IEntityQuery<Tenant> repository, int id)
+        public static Task<Tenant> FindByIdAsync(this IEntityQuery<Tenant> repository, Guid id)
         {
-            return await repository.FirstOrDefaultAsync(bc => bc.Id == id);
+            return repository.FirstOrDefaultAsync(t => t.Id == id);
         }
 
-        public static async Task<Tenant> FindByNameAsync(this IEntityQuery<Tenant> repository, string name)
+        public static Task<Tenant> FindByEmailAsync(this IEntityQuery<Tenant> repository, string email)
         {
-            return await repository.FirstOrDefaultAsync(bc => bc.Name == name.Trim());
+            return repository.FirstOrDefaultAsync(t => t.Email == email);
         }
 
-        public static async Task<Tenant> FindDuplicateByNameAsync(this IEntityQuery<Tenant> repository, Tenant entity)
+        public static Task<Tenant> FindDuplicateByEmailAsync(this IEntityQuery<Tenant> repository, Tenant entity)
         {
-            IQueryable<Tenant> query = repository.Query(bc => bc.Name == entity.Name.Trim());
+            IQueryable<Tenant> query = repository.Query(t => t.Email == entity.Email);
 
-            if (entity.Id != 0)
+            if (entity.Id != Guid.Empty)
             {
-                query = query.Where(bc => bc.Id != entity.Id);
+                query = query.Where(t => t.Id != entity.Id);
             }
 
-            return await query.FirstOrDefaultAsync();
+            return query.FirstOrDefaultAsync();
         }
     }
 }

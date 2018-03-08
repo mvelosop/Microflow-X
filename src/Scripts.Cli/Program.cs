@@ -10,11 +10,8 @@ namespace Scripts.Cli
 		{
 			Console.WriteLine("Host for EF scripts");
 
-			// 1-2. Initialize DbContext and apply migration to verify it's working
-			//---------------------------------------------------------------------
-
 			string connectionString =
-				"Server=localhost; Initial Catalog=MicroFlow.Cli; Trusted_Connection=true; MultipleActiveResultSets=true;";
+				"Server=localhost; Initial Catalog=MicroFlow-X.Cli; Trusted_Connection=true; MultipleActiveResultSets=true;";
 
 			var optionsBuilder = new DbContextOptionsBuilder<TenantsDbContext>();
 

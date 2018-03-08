@@ -4,17 +4,14 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Budget.Data.Services;
 using Domion.Lib;
 using Tenants.Core.Model;
 using Tenants.Data.Extensions;
+using Tenants.Data.Repositories;
 
 namespace Tenants.App.Services
 {
-    // 6-6. Add TenantServices
-    //------------------------
-
-    public class TenantServices
+    public class TenantServices : ITenantServices
     {
         private readonly Lazy<TenantRepository> _lazyTenantRepo;
 
@@ -37,9 +34,9 @@ namespace Tenants.App.Services
             return Errors.NoError;
         }
 
-        public async Task<Tenant> FindTenantByNameAsync(string name)
+        public async Task<Tenant> FindTenantByEmailAsync(string name)
         {
-            return await TenantRepo.FindByNameAsync(name);
+            return await TenantRepo.FindByEmailAsync(name);
         }
 
         public IQueryable<Tenant> QueryTenants(Expression<Func<Tenant, bool>> where = null)
