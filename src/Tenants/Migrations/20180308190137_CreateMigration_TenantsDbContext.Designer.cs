@@ -11,7 +11,7 @@ using Tenants.Data.Configuration;
 namespace Tenants.Migrations
 {
     [DbContext(typeof(TenantsDbContext))]
-    [Migration("20180217163922_CreateMigration_TenantsDbContext")]
+    [Migration("20180308190137_CreateMigration_TenantsDbContext")]
     partial class CreateMigration_TenantsDbContext
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,20 +23,24 @@ namespace Tenants.Migrations
 
             modelBuilder.Entity("Tenants.Core.Model.Tenant", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(250);
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(250);
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<byte[]>("UpdateToken")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name")
+                    b.HasIndex("Email")
                         .IsUnique();
 
                     b.ToTable("Tenants","Tenants");

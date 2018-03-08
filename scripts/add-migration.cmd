@@ -21,7 +21,7 @@ set cliProjectDir="..\src\Scripts.Cli"
 @echo cd %cliProjectDir%
 cd %cliProjectDir%
 
-@echo dotnet ef migrations add %name%Migration_%dbContext% -p ..\%project% -c %dbContext%
+@echo dotnet ef migrations add %name%Migration_%dbContext% -p ..\%project% -c %dbContext% 
 dotnet ef migrations add %name%Migration_%dbContext% -p ..\%project% -c %dbContext%
 
 cd %scriptsDir%

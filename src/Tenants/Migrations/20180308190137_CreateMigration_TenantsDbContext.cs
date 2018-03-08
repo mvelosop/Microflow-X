@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 using System.Collections.Generic;
 
@@ -17,10 +16,10 @@ namespace Tenants.Migrations
                 schema: "Tenants",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<Guid>(nullable: false),
+                    Email = table.Column<string>(maxLength: 250, nullable: false),
                     Name = table.Column<string>(maxLength: 250, nullable: false),
-                    RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true)
+                    UpdateToken = table.Column<byte[]>(rowVersion: true, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -28,10 +27,10 @@ namespace Tenants.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tenants_Name",
+                name: "IX_Tenants_Email",
                 schema: "Tenants",
                 table: "Tenants",
-                column: "Name",
+                column: "Email",
                 unique: true);
         }
 

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2027
+VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E2E64DF5-3567-427A-93A9-56BBF1D4CFB3}"
 EndProject
@@ -20,7 +20,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenants", "src\Tenants\Tena
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domion", "lib\Domion\Domion.csproj", "{57A9E2CE-AAB5-422A-B392-249CCC8380E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domion.Data", "lib\Domion.Data\Domion.Data.csproj", "{CF3BA802-A594-41C6-9F6C-C309E1850E82}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domion.Data", "lib\Domion.Data\Domion.Data.csproj", "{CF3BA802-A594-41C6-9F6C-C309E1850E82}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenants.Specs", "specs\Tenants.Specs\Tenants.Specs.csproj", "{7011F34A-1F58-4DB4-804D-7D1CED7E55C6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DC497CBA-3ECF-45A2-BA05-256675FDBDF5}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domion.Testing", "lib\Domion.Testing\Domion.Testing.csproj", "{15029DDD-BC52-4219-8A44-8445613029A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,6 +53,14 @@ Global
 		{CF3BA802-A594-41C6-9F6C-C309E1850E82}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF3BA802-A594-41C6-9F6C-C309E1850E82}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF3BA802-A594-41C6-9F6C-C309E1850E82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7011F34A-1F58-4DB4-804D-7D1CED7E55C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7011F34A-1F58-4DB4-804D-7D1CED7E55C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7011F34A-1F58-4DB4-804D-7D1CED7E55C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7011F34A-1F58-4DB4-804D-7D1CED7E55C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15029DDD-BC52-4219-8A44-8445613029A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15029DDD-BC52-4219-8A44-8445613029A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15029DDD-BC52-4219-8A44-8445613029A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15029DDD-BC52-4219-8A44-8445613029A9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -53,6 +70,8 @@ Global
 		{6DA1BFBD-44FD-4633-AC7B-5447C19100D8} = {E2E64DF5-3567-427A-93A9-56BBF1D4CFB3}
 		{57A9E2CE-AAB5-422A-B392-249CCC8380E7} = {50FF9B5D-47F1-4CFF-B03C-D90FE7286B3A}
 		{CF3BA802-A594-41C6-9F6C-C309E1850E82} = {50FF9B5D-47F1-4CFF-B03C-D90FE7286B3A}
+		{7011F34A-1F58-4DB4-804D-7D1CED7E55C6} = {634008AE-3F46-47BD-B81E-547F18A1D2DB}
+		{15029DDD-BC52-4219-8A44-8445613029A9} = {50FF9B5D-47F1-4CFF-B03C-D90FE7286B3A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {596A53F3-2525-4DFE-9AE1-E0A16A9170D3}
