@@ -13,21 +13,18 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Tenants.Core.Model
 {
-    // 6-1. Add tenant model
-    //----------------------
-
     public class Tenant
     {
-        public Tenant()
-        {
-        }
-
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
         [MaxLength(250)] // Default string length
-        public virtual string Name { get; set; } // Key data ----------
+        public virtual string Email { get; set; } // Key data ----------
 
-        public virtual Byte[] RowVersion { get; set; }
+        [Required]
+        [MaxLength(250)] // Default string length
+        public virtual string Name { get; set; }
+
+        public virtual Byte[] UpdateToken { get; set; }
     }
 }

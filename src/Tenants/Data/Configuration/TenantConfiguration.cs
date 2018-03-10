@@ -25,12 +25,12 @@ namespace Tenants.Data.Configuration
 
             builder.HasKey(t => t.Id);
 
-            builder.Property(t => t.RowVersion)
+            builder.Property(t => t.UpdateToken)
                 .IsRowVersion();
 
             // Indexes
 
-            builder.HasIndex(t => t.Name)
+            builder.HasIndex(t => t.Email)
                 .IsUnique();
         }
     }

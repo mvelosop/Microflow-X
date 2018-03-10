@@ -8,24 +8,22 @@
 //  Original author: Miguel
 //------------------------------------------------------------------------------
 
-using Domion.Data.Base;
-using Domion.Lib;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Domion.Data.Base;
+using Domion.Lib;
 using Tenants.Core.Model;
+using Tenants.Core.Repositories;
 using Tenants.Data.Configuration;
 using Tenants.Data.Extensions;
 
-namespace Budget.Data.Services
+namespace Tenants.Data.Repositories
 {
-    // 6-4. Add TenantRepository
-    //--------------------------
-
-    public class TenantRepository : EntityRepository<Tenant>, IEntityQuery<Tenant>
+    public class TenantRepository : EntityRepository<Tenant>, ITenantRepository
     {
         public static readonly string DuplicateByNameError = @"There's another Tenant with Name ""{0}"", can't duplicate! (Id={1})";
 
@@ -40,39 +38,39 @@ namespace Budget.Data.Services
             return base.Query(where);
         }
 
-        public new virtual async Task<int> SaveChangesAsync()
+        public new virtual Task<int> SaveChangesAsync()
         {
-            return await base.SaveChangesAsync();
+            return base.SaveChangesAsync();
         }
 
-        public new virtual async Task<List<ValidationResult>> TryDeleteAsync(Tenant entity)
+        public new virtual Task<List<ValidationResult>> TryDeleteAsync(Tenant entity)
         {
-            if (entity.RowVersion == null || entity.RowVersion.Length == 0) throw new InvalidOperationException($"Missing {nameof(entity.RowVersion)} on Delete");
+            if (entity.UpdateToken == null || entity.UpdateToken.Length == 0) throw new InvalidOperationException($"Missing {nameof(entity.UpdateToken)} on Delete");
 
-            return await base.TryDeleteAsync(entity);
+            return base.TryDeleteAsync(entity);
         }
 
-        public new virtual async Task<List<ValidationResult>> TryInsertAsync(Tenant entity)
+        public new virtual Task<List<ValidationResult>> TryInsertAsync(Tenant entity)
         {
-            if (entity.RowVersion != null && entity.RowVersion.Length > 0) throw new InvalidOperationException($"Existing {nameof(entity.RowVersion)} on Insert");
+            if (entity.UpdateToken != null && entity.UpdateToken.Length > 0) throw new InvalidOperationException($"Existing {nameof(entity.UpdateToken)} on Insert");
 
             CommonSaveOperations(entity);
 
-            return await base.TryInsertAsync(entity);
+            return base.TryInsertAsync(entity);
         }
 
-        public new virtual async Task<List<ValidationResult>> TryUpdateAsync(Tenant entity)
+        public new virtual Task<List<ValidationResult>> TryUpdateAsync(Tenant entity)
         {
-            if (entity.RowVersion == null || entity.RowVersion.Length == 0) throw new InvalidOperationException($"Missing {nameof(entity.RowVersion)} on Update");
+            if (entity.UpdateToken == null || entity.UpdateToken.Length == 0) throw new InvalidOperationException($"Missing {nameof(entity.UpdateToken)} on Update");
 
             CommonSaveOperations(entity);
 
-            return await base.TryUpdateAsync(entity);
+            return base.TryUpdateAsync(entity);
         }
 
-        public virtual async Task<List<ValidationResult>> TryUpsertAsync(Tenant entity)
+        public virtual Task<List<ValidationResult>> TryUpsertAsync(Tenant entity)
         {
-            return entity.Id == 0 ? await TryInsertAsync(entity) : await TryUpdateAsync(entity);
+            return entity.Id == Guid.Empty ? TryInsertAsync(entity) : TryUpdateAsync(entity);
         }
 
         /// <summary>
@@ -83,15 +81,15 @@ namespace Budget.Data.Services
             TrimStrings(entity);
         }
 
-        protected override async Task<List<ValidationResult>> ValidateDeleteAsync(Tenant entity)
+        protected override Task<List<ValidationResult>> ValidateDeleteAsync(Tenant entity)
         {
-            return await base.ValidateDeleteAsync(entity);
+            return base.ValidateDeleteAsync(entity);
         }
 
         /// <inheritdoc />
         protected override async Task<List<ValidationResult>> ValidateSaveAsync(Tenant entity)
         {
-            Tenant duplicateByName = await this.FindDuplicateByNameAsync(entity);
+            Tenant duplicateByName = await this.FindDuplicateByEmailAsync(entity);
 
             if (duplicateByName != null)
             {
