@@ -1,23 +1,24 @@
 ﻿using System;
+using Domion.Base;
+using MediatR;
+using Tenants.App.Base;
+using Tenants.Core.Model;
 
 namespace Tenants.App.Commands
 {
-	public class ModifyTenantCommand
-	{
-		public ModifyTenantCommand(int id, string name, byte[] rowVersion)
-		{
-			Id = id;
-			Name = name ?? throw new ArgumentNullException(nameof(name));
-			RowVersion = rowVersion ?? throw new ArgumentNullException(nameof(rowVersion));
+    public class ModifyTenantCommand : TenantDataCommand, IRequest<CommandResult<Tenant>>
+    {
+        public ModifyTenantCommand(Guid id, TenantData data, byte[] updateToken)
+            : base(data)
+        {
+            Id = id;
+            UpdateToken = updateToken ?? throw new ArgumentNullException(nameof(updateToken));
 
-			if (rowVersion.Length == 0) throw new ArgumentException("Value cannot be an empty collection.", nameof(rowVersion));
-			if (id <= 0) throw new ArgumentOutOfRangeException(nameof(id));
-		}
+            if (updateToken.Length == 0) throw new ArgumentException("Value cannot be an empty collection.", nameof(updateToken));
+        }
 
-		public int Id { get; }
+        public Guid Id { get; }
 
-		public string Name { get; }
-
-		public byte[] RowVersion { get; }
-	}
+        public byte[] UpdateToken { get; }
+    }
 }

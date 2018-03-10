@@ -9,11 +9,13 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
+using Tenants.App.Base;
 using Tenants.App.Commands;
 using Tenants.Core.Model;
 using Tenants.Core.Repositories;
 using Tenants.Data.Extensions;
 using Tenants.Data.Repositories;
+using Tenants.Specs.Helpers;
 
 namespace Tenants.Specs.Bindings
 {
@@ -50,7 +52,7 @@ namespace Tenants.Specs.Bindings
         [Then(@"I can't add another tenant ""(.*)"", ""(.*)""")]
         public async Task ThenICanTAddAnotherTenant(string email, string name)
         {
-            CommandResult<Tenant> result = await AddTenantCommandAsync(email, name);
+            CommandResult<Tenant> result = await AddTenantCommandAsync(new TenantData(email, name));
 
             result.Succeeded.Should().BeFalse();
             result.ValidationResults.Should().ContainErrorMessage(TenantRepository.DuplicateByNameError);
@@ -69,23 +71,43 @@ namespace Tenants.Specs.Bindings
         [When(@"I add tenant ""(.*)"", ""(.*)""")]
         public async Task WhenIAddTenant(string email, string name)
         {
-            await AddTenantAsync(email, name);
+            await AddTenantAsync(new TenantData(email, name));
         }
 
+        [Given(@"I add tenants:")]
         [When(@"I add tenants:")]
         public async Task WhenIAddTenants(Table table)
         {
-            IEnumerable<Tenant> nameList = table.CreateSet<Tenant>();
+            var dataList = table.CreateSet<TenantData>();
 
-            foreach (var tenant in nameList)
+            foreach (var data in dataList)
             {
-                await AddTenantAsync(tenant.Email, tenant.Name);
+                await AddTenantAsync(data);
             }
         }
 
-        private async Task<Tenant> AddTenantAsync(string email, string name)
+        [When(@"I modify the tenants like so:")]
+        public async Task WhenIModifyTheTenantsLikeSo(Table table)
         {
-            CommandResult<Tenant> result = await AddTenantCommandAsync(email, name);
+            var dataList = table.CreateSet<TenantSpecData>();
+
+            var repo = Resolve<ITenantRepository>();
+
+            var mediator = Resolve<IMediator>();
+
+            foreach (TenantSpecData data in dataList)
+            {
+                var entity = await repo.FindByEmailAsync(data.FindEmail);
+
+                var result = await mediator.Send(new ModifyTenantCommand(entity.Id, data, entity.UpdateToken));
+
+                result.Succeeded.Should().BeTrue();
+            }
+        }
+
+        private async Task<Tenant> AddTenantAsync(TenantData data)
+        {
+            CommandResult<Tenant> result = await AddTenantCommandAsync(data);
 
             result.ValidationResults.Should().BeEmpty();
             result.Succeeded.Should().BeTrue();
@@ -93,11 +115,11 @@ namespace Tenants.Specs.Bindings
             return result.Value;
         }
 
-        private Task<CommandResult<Tenant>> AddTenantCommandAsync(string email, string name)
+        private Task<CommandResult<Tenant>> AddTenantCommandAsync(TenantData data)
         {
             var mediator = Resolve<IMediator>();
 
-            return mediator.Send(new AddTenantCommand(email, name));
+            return mediator.Send(new AddTenantCommand(data));
         }
 
         private async Task EnsureTenantDoesNotExistAsync(string email)

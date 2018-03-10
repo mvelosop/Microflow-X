@@ -137,6 +137,66 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
+        [Xunit.FactAttribute(DisplayName="Scenario - 1.3 - Modify tenants")]
+        [Xunit.TraitAttribute("FeatureTitle", "[1] - Manage Tenants")]
+        [Xunit.TraitAttribute("Description", "Scenario - 1.3 - Modify tenants")]
+        public virtual void Scenario_1_3_ModifyTenants()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Scenario - 1.3 - Modify tenants", ((string[])(null)));
+#line 34
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Email"});
+            table4.AddRow(new string[] {
+                        "tenant-e@server.com"});
+            table4.AddRow(new string[] {
+                        "tenant-f@server.com"});
+#line 36
+    testRunner.Given("these tenants don\'t exist:", ((string)(null)), table4, "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Email",
+                        "Name"});
+            table5.AddRow(new string[] {
+                        "tenant-e@server.com",
+                        "Insert Tenant E"});
+            table5.AddRow(new string[] {
+                        "tenant-f@server.com",
+                        "Insert Tenant F"});
+#line 41
+    testRunner.And("I add tenants:", ((string)(null)), table5, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+                        "FindEmail",
+                        "Email",
+                        "Name"});
+            table6.AddRow(new string[] {
+                        "tenant-e@server.com",
+                        "tenant-e-modified@server.com",
+                        "Modified Tenant E"});
+            table6.AddRow(new string[] {
+                        "tenant-f@server.com",
+                        "tenant-f-modified@server.com",
+                        "Modified Tenant F"});
+#line 46
+    testRunner.When("I modify the tenants like so:", ((string)(null)), table6, "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Email",
+                        "Name"});
+            table7.AddRow(new string[] {
+                        "tenant-e-modified@server.com",
+                        "Modified Tenant E"});
+            table7.AddRow(new string[] {
+                        "tenant-f-modified@server.com",
+                        "Modified Tenant F"});
+#line 51
+    testRunner.Then("when querying for \"Modified\" tenants I get these:", ((string)(null)), table7, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
         [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "2.3.0.0")]
         [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
         public class FixtureData : System.IDisposable
