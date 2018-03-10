@@ -52,10 +52,34 @@ namespace Tenants.Specs.Bindings
         [Then(@"I can't add another tenant ""(.*)"", ""(.*)""")]
         public async Task ThenICanTAddAnotherTenant(string email, string name)
         {
-            CommandResult<Tenant> result = await AddTenantCommandAsync(new TenantData(email, name));
+            var command = new AddTenantCommand(new TenantData(email, name));
+
+            CommandResult<Tenant> result = await GetTenantCommandResult(command);
 
             result.Succeeded.Should().BeFalse();
-            result.ValidationResults.Should().ContainErrorMessage(TenantRepository.DuplicateByNameError);
+            result.ValidationResults.Should().ContainErrorMessage(TenantRepository.DuplicateByEmailError);
+        }
+
+        [Then(@"I get error ""(.*)"" when trying to modify tenant's email from ""(.*)"" to ""(.*)"":")]
+        public async Task ThenIGetWhenTryingToModifyTenantSEmailFromTo(string errorMessage, string findEmail, string modifyEmail)
+        {
+            string errorText = GetErrorText(errorMessage);
+
+            var repo = Resolve<ITenantRepository>();
+
+            var entity = await repo.FindByEmailAsync(findEmail);
+
+            entity.Should().NotBeNull();
+
+            var data = TenantData.From(entity);
+            data.Email = modifyEmail;
+
+            var command = new ModifyTenantCommand(entity.Id, data, entity.UpdateToken);
+
+            CommandResult<Tenant> result = await GetTenantCommandResult(command);
+
+            result.Succeeded.Should().BeFalse();
+            result.ValidationResults.Should().ContainErrorMessage(errorText);
         }
 
         [Then(@"when querying for ""(.*)"" tenants I get these:")]
@@ -101,25 +125,21 @@ namespace Tenants.Specs.Bindings
 
                 var result = await mediator.Send(new ModifyTenantCommand(entity.Id, data, entity.UpdateToken));
 
+                result.ValidationResults.Should().BeEmpty();
                 result.Succeeded.Should().BeTrue();
             }
         }
 
         private async Task<Tenant> AddTenantAsync(TenantData data)
         {
-            CommandResult<Tenant> result = await AddTenantCommandAsync(data);
+            var command = new AddTenantCommand(data);
+
+            CommandResult<Tenant> result = await GetTenantCommandResult(command);
 
             result.ValidationResults.Should().BeEmpty();
             result.Succeeded.Should().BeTrue();
 
             return result.Value;
-        }
-
-        private Task<CommandResult<Tenant>> AddTenantCommandAsync(TenantData data)
-        {
-            var mediator = Resolve<IMediator>();
-
-            return mediator.Send(new AddTenantCommand(data));
         }
 
         private async Task EnsureTenantDoesNotExistAsync(string email)
@@ -135,6 +155,20 @@ namespace Tenants.Specs.Bindings
             errors.Should().BeEmpty();
 
             await repo.SaveChangesAsync();
+        }
+
+        private string GetErrorText(string errorMessage)
+        {
+            var propInfo = typeof(TenantRepository).GetField(errorMessage);
+
+            return (string)propInfo.GetValue(null);
+        }
+
+        private Task<CommandResult<Tenant>> GetTenantCommandResult(IRequest<CommandResult<Tenant>> request)
+        {
+            var mediator = Resolve<IMediator>();
+
+            return mediator.Send(request);
         }
 
         private T Resolve<T>() where T : class
