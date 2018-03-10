@@ -152,6 +152,10 @@ this.ScenarioSetup(scenarioInfo);
                         "tenant-e@server.com"});
             table4.AddRow(new string[] {
                         "tenant-f@server.com"});
+            table4.AddRow(new string[] {
+                        "tenant-e-modified@server.com"});
+            table4.AddRow(new string[] {
+                        "tenant-f-modified@server.com"});
 #line 36
     testRunner.Given("these tenants don\'t exist:", ((string)(null)), table4, "Given ");
 #line hidden
@@ -164,7 +168,7 @@ this.ScenarioSetup(scenarioInfo);
             table5.AddRow(new string[] {
                         "tenant-f@server.com",
                         "Insert Tenant F"});
-#line 41
+#line 44
     testRunner.And("I add tenants:", ((string)(null)), table5, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
@@ -179,7 +183,7 @@ this.ScenarioSetup(scenarioInfo);
                         "tenant-f@server.com",
                         "tenant-f-modified@server.com",
                         "Modified Tenant F"});
-#line 46
+#line 49
     testRunner.When("I modify the tenants like so:", ((string)(null)), table6, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
@@ -191,8 +195,44 @@ this.ScenarioSetup(scenarioInfo);
             table7.AddRow(new string[] {
                         "tenant-f-modified@server.com",
                         "Modified Tenant F"});
-#line 51
+#line 54
     testRunner.Then("when querying for \"Modified\" tenants I get these:", ((string)(null)), table7, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.FactAttribute(DisplayName="Scenario - 1.4 - Avoid duplicate email when modifying tenant")]
+        [Xunit.TraitAttribute("FeatureTitle", "[1] - Manage Tenants")]
+        [Xunit.TraitAttribute("Description", "Scenario - 1.4 - Avoid duplicate email when modifying tenant")]
+        public virtual void Scenario_1_4_AvoidDuplicateEmailWhenModifyingTenant()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Scenario - 1.4 - Avoid duplicate email when modifying tenant", ((string[])(null)));
+#line 60
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Email"});
+            table8.AddRow(new string[] {
+                        "tenant-g@server.com"});
+            table8.AddRow(new string[] {
+                        "tenant-h@server.com"});
+#line 62
+    testRunner.Given("these tenants don\'t exist:", ((string)(null)), table8, "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Email",
+                        "Name"});
+            table9.AddRow(new string[] {
+                        "tenant-g@server.com",
+                        "Insert Tenant G"});
+            table9.AddRow(new string[] {
+                        "tenant-h@server.com",
+                        "Insert Tenant H"});
+#line 68
+    testRunner.And("I add tenants:", ((string)(null)), table9, "And ");
+#line 73
+    testRunner.Then("I get error \"DuplicateByEmailError\" when trying to modify tenant\'s email from \"te" +
+                    "nant-g@server.com\" to \"tenant-h@server.com\":", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

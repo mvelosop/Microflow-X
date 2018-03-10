@@ -25,7 +25,7 @@ namespace Tenants.Data.Repositories
 {
     public class TenantRepository : EntityRepository<Tenant>, ITenantRepository
     {
-        public static readonly string DuplicateByNameError = @"There's another Tenant with Name ""{0}"", can't duplicate! (Id={1})";
+        public static readonly string DuplicateByEmailError = @"There's another Tenant with Email ""{0}"", can't duplicate! (Id={1})";
 
         /// <inheritdoc />
         public TenantRepository(TenantsDbContext dbContext)
@@ -89,11 +89,11 @@ namespace Tenants.Data.Repositories
         /// <inheritdoc />
         protected override async Task<List<ValidationResult>> ValidateSaveAsync(Tenant entity)
         {
-            Tenant duplicateByName = await this.FindDuplicateByEmailAsync(entity);
+            Tenant duplicateByEmail = await this.FindDuplicateByEmailAsync(entity);
 
-            if (duplicateByName != null)
+            if (duplicateByEmail != null)
             {
-                return Errors.ErrorList(DuplicateByNameError, new object[] { duplicateByName.Name, duplicateByName.Id }, new[] { "Name" });
+                return Errors.ErrorList(DuplicateByEmailError, new object[] { duplicateByEmail.Email, duplicateByEmail.Id }, new[] { "Name" });
             }
 
             return Errors.NoError;

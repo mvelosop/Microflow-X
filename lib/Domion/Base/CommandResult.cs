@@ -5,29 +5,26 @@ using System.Linq;
 
 namespace Domion.Base
 {
-    public class CommandResult<TResult>
+    public class CommandResult
     {
-        private static List<ValidationResult> _noResults = new List<ValidationResult>();
+        private static readonly List<ValidationResult> NoResults = new List<ValidationResult>();
 
-        public CommandResult(TResult value)
+        public CommandResult(bool succeeded)
         {
-            Succeeded = true;
-            Value = value;
-            ValidationResults = _noResults;
+            Succeeded = succeeded;
+            ValidationResults = NoResults;
         }
 
         public CommandResult(IEnumerable<ValidationResult> validationResults)
         {
             Succeeded = false;
-            Value = default(TResult);
             ValidationResults = validationResults.ToList();
         }
 
         public CommandResult(Exception ex)
         {
             Succeeded = false;
-            Value = default(TResult);
-            ValidationResults = new List<ValidationResult>() { new ValidationResult(ex.Message) };
+            ValidationResults = NoResults;
             Exception = ex;
         }
 
@@ -36,6 +33,27 @@ namespace Domion.Base
         public bool Succeeded { get; }
 
         public List<ValidationResult> ValidationResults { get; }
+    }
+
+    public class CommandResult<TResult> : CommandResult
+    {
+        public CommandResult(TResult value)
+            : base(true)
+        {
+            Value = value;
+        }
+
+        public CommandResult(IEnumerable<ValidationResult> validationResults)
+        : base(validationResults)
+        {
+            Value = default(TResult);
+        }
+
+        public CommandResult(Exception ex)
+        : base(ex)
+        {
+            Value = default(TResult);
+        }
 
         public TResult Value { get; }
     }

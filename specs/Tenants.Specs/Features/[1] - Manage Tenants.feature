@@ -34,9 +34,12 @@ Scenario Outline: Scenario - 1.2 - Avoid duplicate tenant name
 Scenario: Scenario - 1.3 - Modify tenants
 
     Given these tenants don't exist:
-        | Email               |
-        | tenant-e@server.com |
-        | tenant-f@server.com |
+        | Email                        |
+        | tenant-e@server.com          |
+        | tenant-f@server.com          |
+        | tenant-e-modified@server.com |
+        | tenant-f-modified@server.com |
+
 
     And I add tenants:
         | Email               | Name            |
@@ -44,7 +47,7 @@ Scenario: Scenario - 1.3 - Modify tenants
         | tenant-f@server.com | Insert Tenant F |
 
     When I modify the tenants like so:
-        | FindEmail           | Email                        | Name            |
+        | FindEmail           | Email                        | Name              |
         | tenant-e@server.com | tenant-e-modified@server.com | Modified Tenant E |
         | tenant-f@server.com | tenant-f-modified@server.com | Modified Tenant F |
 
@@ -53,3 +56,18 @@ Scenario: Scenario - 1.3 - Modify tenants
         | tenant-e-modified@server.com | Modified Tenant E |
         | tenant-f-modified@server.com | Modified Tenant F |
 
+
+Scenario: Scenario - 1.4 - Avoid duplicate email when modifying tenant
+
+    Given these tenants don't exist:
+        | Email               |
+        | tenant-g@server.com |
+        | tenant-h@server.com |
+
+
+    And I add tenants:
+        | Email               | Name            |
+        | tenant-g@server.com | Insert Tenant G |
+        | tenant-h@server.com | Insert Tenant H |
+
+    Then I get error "DuplicateByEmailError" when trying to modify tenant's email from "tenant-g@server.com" to "tenant-h@server.com":
