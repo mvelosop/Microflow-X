@@ -11,6 +11,7 @@ using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
 using Tenants.App.Base;
 using Tenants.App.Commands;
+using Tenants.App.Queries;
 using Tenants.Core.Model;
 using Tenants.Core.Repositories;
 using Tenants.Data.Extensions;
@@ -85,9 +86,9 @@ namespace Tenants.Specs.Bindings
         [Then(@"when querying for ""(.*)"" tenants I get these:")]
         public async Task ThenWhenQueryingForTenantsIGetThese(string name, Table table)
         {
-            var repo = Resolve<ITenantRepository>();
+            var mediator = Resolve<IMediator>();
 
-            var list = await repo.Query(t => t.Name.StartsWith(name)).ToListAsync();
+            var list = await mediator.Send(new GetTenantListQuery(name));
 
             table.CompareToSet(list);
         }
