@@ -1,4 +1,4 @@
-﻿Feature: [1] - Manage Tenants
+﻿Feature: Feature - [1] - Manage Tenants
     As a service manager
     I need to manage tenants
     To keep control of the service
@@ -71,3 +71,25 @@ Scenario: Scenario - 1.4 - Avoid duplicate email when modifying tenant
         | tenant-h@server.com | Insert Tenant H |
 
     Then I get error "DuplicateByEmailError" when trying to modify tenant's email from "tenant-g@server.com" to "tenant-h@server.com":
+
+
+Scenario: Scenario - 1.5 - Remove tenant
+
+    Given these tenants don't exist:
+        | Email               |
+        | tenant-i@server.com |
+        | tenant-j@server.com |
+
+
+    And I add tenants:
+        | Email               | Name             |
+        | tenant-i@server.com | Removed Tenant I |
+        | tenant-j@server.com | Removed Tenant J |
+
+    When I remove these tenants:
+        | FindEmail           |
+        | tenant-j@server.com |
+
+    Then when querying for "Removed" tenants I get these:
+        | Email               | Name             |
+        | tenant-i@server.com | Removed Tenant I |

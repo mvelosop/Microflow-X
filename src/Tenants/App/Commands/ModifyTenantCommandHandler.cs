@@ -1,12 +1,11 @@
-﻿using System;
+﻿using Domion.Base;
+using MediatR;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Domion.Base;
-using MediatR;
 using Tenants.Core.Model;
 using Tenants.Core.Repositories;
 using Tenants.Data.Extensions;
@@ -40,6 +39,5 @@ namespace Tenants.App.Commands
 
             return new CommandResult<Tenant>(entity);
         }
-
     }
 }
