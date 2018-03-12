@@ -130,6 +130,26 @@ namespace Tenants.Specs.Bindings
             }
         }
 
+        [When(@"I remove these tenants:")]
+        public async Task WhenIRemoveTheseTenants(Table table)
+        {
+            var dataList = table.CreateSet<TenantSpecData>();
+
+            var repo = Resolve<ITenantRepository>();
+
+            var mediator = Resolve<IMediator>();
+
+            foreach (TenantSpecData data in dataList)
+            {
+                var entity = await repo.FindByEmailAsync(data.FindEmail);
+
+                var result = await mediator.Send(new RemoveTenantCommand(entity.Id, entity.UpdateToken));
+
+                result.ValidationResults.Should().BeEmpty();
+                result.Succeeded.Should().BeTrue();
+            }
+        }
+
         private async Task<Tenant> AddTenantAsync(TenantData data)
         {
             var command = new AddTenantCommand(data);

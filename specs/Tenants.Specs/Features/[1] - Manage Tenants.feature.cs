@@ -17,7 +17,7 @@ namespace Tenants.Specs.Features
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "2.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class _1_ManageTenantsFeature : Xunit.IClassFixture<_1_ManageTenantsFeature.FixtureData>, System.IDisposable
+    public partial class Feature_1_ManageTenantsFeature : Xunit.IClassFixture<Feature_1_ManageTenantsFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -27,7 +27,7 @@ namespace Tenants.Specs.Features
 #line 1 "[1] - Manage Tenants.feature"
 #line hidden
         
-        public _1_ManageTenantsFeature(_1_ManageTenantsFeature.FixtureData fixtureData, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public Feature_1_ManageTenantsFeature(Feature_1_ManageTenantsFeature.FixtureData fixtureData, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -36,7 +36,7 @@ namespace Tenants.Specs.Features
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "[1] - Manage Tenants", "    As a service manager\r\n    I need to manage tenants\r\n    To keep control of th" +
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Feature - [1] - Manage Tenants", "    As a service manager\r\n    I need to manage tenants\r\n    To keep control of th" +
                     "e service", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -73,7 +73,7 @@ namespace Tenants.Specs.Features
         }
         
         [Xunit.FactAttribute(DisplayName="Scenario - 1.1 - Add tenants")]
-        [Xunit.TraitAttribute("FeatureTitle", "[1] - Manage Tenants")]
+        [Xunit.TraitAttribute("FeatureTitle", "Feature - [1] - Manage Tenants")]
         [Xunit.TraitAttribute("Description", "Scenario - 1.1 - Add tenants")]
         public virtual void Scenario_1_1_AddTenants()
         {
@@ -118,7 +118,7 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Xunit.TheoryAttribute(DisplayName="Scenario - 1.2 - Avoid duplicate tenant name")]
-        [Xunit.TraitAttribute("FeatureTitle", "[1] - Manage Tenants")]
+        [Xunit.TraitAttribute("FeatureTitle", "Feature - [1] - Manage Tenants")]
         [Xunit.TraitAttribute("Description", "Scenario - 1.2 - Avoid duplicate tenant name")]
         [Xunit.InlineDataAttribute("tenant-c@server.com", "Unique Tenant C", new string[0])]
         [Xunit.InlineDataAttribute("tenant-d@server.com", "Unique Tenant D", new string[0])]
@@ -138,7 +138,7 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Xunit.FactAttribute(DisplayName="Scenario - 1.3 - Modify tenants")]
-        [Xunit.TraitAttribute("FeatureTitle", "[1] - Manage Tenants")]
+        [Xunit.TraitAttribute("FeatureTitle", "Feature - [1] - Manage Tenants")]
         [Xunit.TraitAttribute("Description", "Scenario - 1.3 - Modify tenants")]
         public virtual void Scenario_1_3_ModifyTenants()
         {
@@ -202,7 +202,7 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Xunit.FactAttribute(DisplayName="Scenario - 1.4 - Avoid duplicate email when modifying tenant")]
-        [Xunit.TraitAttribute("FeatureTitle", "[1] - Manage Tenants")]
+        [Xunit.TraitAttribute("FeatureTitle", "Feature - [1] - Manage Tenants")]
         [Xunit.TraitAttribute("Description", "Scenario - 1.4 - Avoid duplicate email when modifying tenant")]
         public virtual void Scenario_1_4_AvoidDuplicateEmailWhenModifyingTenant()
         {
@@ -237,6 +237,55 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
+        [Xunit.FactAttribute(DisplayName="Scenario - 1.5 - Remove tenant")]
+        [Xunit.TraitAttribute("FeatureTitle", "Feature - [1] - Manage Tenants")]
+        [Xunit.TraitAttribute("Description", "Scenario - 1.5 - Remove tenant")]
+        public virtual void Scenario_1_5_RemoveTenant()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Scenario - 1.5 - Remove tenant", ((string[])(null)));
+#line 76
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Email"});
+            table10.AddRow(new string[] {
+                        "tenant-i@server.com"});
+            table10.AddRow(new string[] {
+                        "tenant-j@server.com"});
+#line 78
+    testRunner.Given("these tenants don\'t exist:", ((string)(null)), table10, "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Email",
+                        "Name"});
+            table11.AddRow(new string[] {
+                        "tenant-i@server.com",
+                        "Removed Tenant I"});
+            table11.AddRow(new string[] {
+                        "tenant-j@server.com",
+                        "Removed Tenant J"});
+#line 84
+    testRunner.And("I add tenants:", ((string)(null)), table11, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
+                        "FindEmail"});
+            table12.AddRow(new string[] {
+                        "tenant-j@server.com"});
+#line 89
+    testRunner.When("I remove these tenants:", ((string)(null)), table12, "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Email",
+                        "Name"});
+            table13.AddRow(new string[] {
+                        "tenant-i@server.com",
+                        "Removed Tenant I"});
+#line 93
+    testRunner.Then("when querying for \"Removed\" tenants I get these:", ((string)(null)), table13, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
         [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "2.3.0.0")]
         [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
         public class FixtureData : System.IDisposable
@@ -244,12 +293,12 @@ this.ScenarioSetup(scenarioInfo);
             
             public FixtureData()
             {
-                _1_ManageTenantsFeature.FeatureSetup();
+                Feature_1_ManageTenantsFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                _1_ManageTenantsFeature.FeatureTearDown();
+                Feature_1_ManageTenantsFeature.FeatureTearDown();
             }
         }
     }
