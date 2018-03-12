@@ -22,22 +22,14 @@ namespace Tenants.Setup
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
 
-            //builder.RegisterAssemblyTypes(ThisAssembly)
-            //    .Where(t => t.Name.EndsWith("Services"))
-            //    .AsImplementedInterfaces()
-            //    .AsSelf()
-            //    .InstancePerLifetimeScope();
-
             builder.RegisterAssemblyTypes(ThisAssembly)
-                .Where(t => t.Name.EndsWith("Command"))
+                .Where(t => t.Name.EndsWith("Command") || t.Name.EndsWith("Query"))
                 .AsImplementedInterfaces()
-                .AsSelf()
                 .InstancePerDependency();
 
             builder.RegisterAssemblyTypes(ThisAssembly)
-                .Where(t => t.Name.EndsWith("CommandHandler"))
+                .Where(t => t.Name.EndsWith("CommandHandler") || t.Name.EndsWith("QueryHandler"))
                 .AsImplementedInterfaces()
-                .AsSelf()
                 .InstancePerDependency();
 
             var mediatrOpenTypes = new[]
@@ -46,15 +38,6 @@ namespace Tenants.Setup
                 typeof(IRequestHandler<>),
                 typeof(INotificationHandler<>),
             };
-
-            //foreach (var mediatrOpenType in mediatrOpenTypes)
-            //{
-            //    builder.RegisterAssemblyTypes(ThisAssembly)
-            //        .Where(t => t.Name.EndsWith("Command"))
-            //        .AsClosedTypesOf(mediatrOpenType)
-            //        .AsImplementedInterfaces()
-            //        .InstancePerDependency();
-            //}
         }
     }
 }
