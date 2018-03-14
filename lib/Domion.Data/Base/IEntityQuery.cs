@@ -1,11 +1,12 @@
-﻿using System;
-using System.Linq;
-using System.Linq.Expressions;
+﻿using Domion.Base;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Domion.Data.Base
 {
-    public interface IEntityQuery<T> where T : class
+    public interface IEntityQuery<TEntity> where TEntity : class
     {
-        IQueryable<T> Query(Expression<Func<T, bool>> where = null);
+        Task<List<TEntity>> GetListAsync(IQuerySpec<TEntity> querySpec, CancellationToken cancellationToken);
     }
 }

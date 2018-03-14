@@ -8,18 +8,19 @@
 //  Original author: Miguel
 //------------------------------------------------------------------------------
 
+using Domion.Base;
+using Domion.Data.Base;
+using Domion.Data.Extensions;
+using Domion.Lib;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Domion.Data.Base;
-using Domion.Lib;
 using Tenants.Core.Model;
 using Tenants.Core.Repositories;
 using Tenants.Data.Configuration;
-using Tenants.Data.Extensions;
 
 namespace Tenants.Data.Repositories
 {
@@ -33,9 +34,19 @@ namespace Tenants.Data.Repositories
         {
         }
 
-        public new IQueryable<Tenant> Query(Expression<Func<Tenant, bool>> where = null)
+        public Task<Tenant> FindByEmailAsync(string email)
         {
-            return base.Query(where);
+            return FindByEmailInternal(email, Guid.Empty);
+        }
+
+        public Task<Tenant> FindByIdAsync(Guid id)
+        {
+            return QueryInternal(t => t.Id == id).SingleOrDefaultAsync();
+        }
+
+        public Task<Tenant> FindDuplicateByEmailAsync(Tenant entity)
+        {
+            return FindByEmailInternal(entity.Email, entity.Id);
         }
 
         public new virtual Task<int> SaveChangesAsync()
@@ -97,6 +108,18 @@ namespace Tenants.Data.Repositories
             }
 
             return Errors.NoError;
+        }
+
+        private Task<Tenant> FindByEmailInternal(string email, Guid id)
+        {
+            var query = QueryInternal(t => t.Email == email);
+
+            if (id != Guid.Empty)
+            {
+                query = query.Where(t => t.Id != id);
+            }
+
+            return query.SingleOrDefaultAsync();
         }
 
         private void TrimStrings(Tenant entity)

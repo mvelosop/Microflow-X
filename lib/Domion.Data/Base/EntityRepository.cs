@@ -1,10 +1,12 @@
-﻿using Domion.Lib;
+﻿using Domion.Base;
+using Domion.Lib;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Domion.Data.Base
@@ -13,7 +15,7 @@ namespace Domion.Data.Base
     ///     Generic repository implementation.
     /// </summary>
     /// <typeparam name="TEntity">Entity type</typeparam>
-    public abstract class EntityRepository<TEntity> where TEntity : class
+    public abstract class EntityRepository<TEntity> : IEntityQuery<TEntity> where TEntity : class
     {
         private readonly DbContext _dbContext;
         private readonly DbSet<TEntity> _dbSet;
@@ -33,35 +35,30 @@ namespace Domion.Data.Base
         protected virtual DbSet<TEntity> DbSet => _dbSet;
 
         /// <summary>
-        ///     Returns a query expression that, when enumerated, will retrieve all objects.
+        ///     Returns a query expression that, when enumerated, will retrieve only the objects that satisfy the where condition.
         /// </summary>
-        protected virtual IQueryable<TEntity> Query()
+        public virtual Task<List<TEntity>> GetListAsync(IQuerySpec<TEntity> querySpec, CancellationToken cancellationToken)
         {
-            return Query(null);
+            return QueryInternal(querySpec?.WhereExpression).ToListAsync(cancellationToken);
         }
 
         /// <summary>
-        ///     Returns a query expression that, when enumerated, will retrieve only the objects that satisfy the where condition.
+        ///     The base query, internal use only do not expose out of the concrete class
         /// </summary>
-        protected virtual IQueryable<TEntity> Query(Expression<Func<TEntity, bool>> where)
+        /// <param name="whereExpression"></param>
+        /// <returns>The base for all query operations</returns>
+        protected virtual IQueryable<TEntity> QueryInternal(Expression<Func<TEntity, bool>> whereExpression = null)
         {
-            IQueryable<TEntity> query = _dbSet;
-
-            if (where != null)
-            {
-                query = query.Where(where);
-            }
-
-            return query;
+            return whereExpression == null ? _dbSet : _dbSet.Where(whereExpression);
         }
 
         /// <summary>
         ///     Saves changes asynchronously from the DbContext's change tracker to the database.
         /// </summary>
         /// <returns>The number of objects written to the underlying database</returns>
-        protected virtual async Task<int> SaveChangesAsync()
+        protected virtual Task<int> SaveChangesAsync()
         {
-            return await _dbContext.SaveChangesAsync();
+            return _dbContext.SaveChangesAsync();
         }
 
         /// <summary>
