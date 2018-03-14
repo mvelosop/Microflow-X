@@ -18,12 +18,12 @@ namespace Tenants.App.Behaviors
 
             sw.Start();
 
-            _logger.LogInformation("----- Handling {RequestName}; value: {@RequestValue}", typeof(TRequest).Name, request);
+            _logger.LogInformation("Handling {RequestName}; value: {@RequestValue}", typeof(TRequest).Name, request);
             var response = await next();
 
             sw.Stop();
 
-            _logger.LogInformation("----- Handled {RequestName}; elapsed time (ms): {Time:F3}; value: {@Response}", typeof(TRequest).Name, sw.Elapsed.TotalMilliseconds, response);
+            _logger.LogInformation("Handled {RequestName}; elapsed time (ms): {Time:F3}; value: {@Response}", typeof(TRequest).Name, sw.Elapsed.TotalMilliseconds, response);
             return response;
         }
     }
