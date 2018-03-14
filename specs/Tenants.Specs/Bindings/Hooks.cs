@@ -1,5 +1,5 @@
 ﻿using Autofac;
-using Tenants;
+using Serilog;
 using TechTalk.SpecFlow;
 using Tenants.Specs;
 
@@ -17,6 +17,12 @@ namespace Budget.Specs.Bindings
             ScenarioContext scenarioContext)
         {
             _scenarioContext = scenarioContext;
+        }
+
+        [AfterTestRun]
+        public static void AfterTestRun()
+        {
+            Log.CloseAndFlush();
         }
 
         [BeforeTestRun]
