@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.NetworkInformation;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Autofac;
+﻿using Autofac;
 using MediatR;
-using MediatR.Pipeline;
-using TechTalk.SpecFlow.Plugins;
+using System.Collections.Generic;
+using System.Reflection;
+using Tenants.App.Behaviors;
 
 namespace Tenants.Specs
 {
@@ -29,6 +23,8 @@ namespace Tenants.Specs
                 var c = ctx.Resolve<IComponentContext>();
                 return t => (IEnumerable<object>)c.Resolve(typeof(IEnumerable<>).MakeGenericType(t));
             });
+
+            builder.RegisterGeneric(typeof(LoggingBehavior<,>)).As(typeof(IPipelineBehavior<,>));
         }
     }
 }
