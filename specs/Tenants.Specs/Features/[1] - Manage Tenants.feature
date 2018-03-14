@@ -15,7 +15,7 @@ Scenario: Scenario - 1.1 - Add tenants
         | tenant-a@server.com | Add Tenant A |
         | tenant-b@server.com | Add Tenant B |
 
-    Then when querying for "Add" tenants I get these:
+    Then when querying for "Add%" tenants I get these:
         | Email               | Name         |
         | tenant-a@server.com | Add Tenant A |
         | tenant-b@server.com | Add Tenant B |
@@ -51,7 +51,7 @@ Scenario: Scenario - 1.3 - Modify tenants
         | tenant-e@server.com | tenant-e-modified@server.com | Modified Tenant E |
         | tenant-f@server.com | tenant-f-modified@server.com | Modified Tenant F |
 
-    Then when querying for "Modified" tenants I get these:
+    Then when querying for "Modified%" tenants I get these:
         | Email                        | Name              |
         | tenant-e-modified@server.com | Modified Tenant E |
         | tenant-f-modified@server.com | Modified Tenant F |
@@ -63,7 +63,6 @@ Scenario: Scenario - 1.4 - Avoid duplicate email when modifying tenant
         | Email               |
         | tenant-g@server.com |
         | tenant-h@server.com |
-
 
     And I add tenants:
         | Email               | Name            |
@@ -90,6 +89,6 @@ Scenario: Scenario - 1.5 - Remove tenant
         | FindEmail           |
         | tenant-j@server.com |
 
-    Then when querying for "Removed" tenants I get these:
+    Then when querying for "Removed%" tenants I get these:
         | Email               | Name             |
         | tenant-i@server.com | Removed Tenant I |

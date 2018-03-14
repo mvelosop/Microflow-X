@@ -8,7 +8,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Tenants.Core.Model;
 using Tenants.Core.Repositories;
-using Tenants.Data.Extensions;
 
 namespace Tenants.App.Commands
 {

@@ -1,18 +1,19 @@
-﻿using Domion.Data.Base;
+﻿using Domion.Data.Extensions;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Tenants.Core.Model;
+using Tenants.Core.Repositories;
+using Tenants.Data.QuerySpecs;
 
 namespace Tenants.App.Queries
 {
     public class GetTenantListQueryHandler : IRequestHandler<GetTenantListQuery, List<Tenant>>
     {
-        private readonly IEntityQuery<Tenant> _repo;
+        private readonly ITenantRepository _repo;
 
-        public GetTenantListQueryHandler(IEntityQuery<Tenant> repo)
+        public GetTenantListQueryHandler(ITenantRepository repo)
         {
             _repo = repo;
         }
@@ -21,10 +22,10 @@ namespace Tenants.App.Queries
         {
             if (string.IsNullOrWhiteSpace(request.Name))
             {
-                return _repo.Query().ToListAsync(cancellationToken: cancellationToken);
+                return _repo.GetListAsync(cancellationToken);
             }
 
-            return _repo.Query(t => t.Name.StartsWith(request.Name)).ToListAsync(cancellationToken: cancellationToken);
+            return _repo.GetListAsync(new TenantQuerySpec { Name = request.Name }, cancellationToken);
         }
     }
 }
