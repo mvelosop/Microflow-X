@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
+using Serilog;
 using Tenants.Setup;
 
 namespace Tenants.Specs
@@ -16,27 +18,39 @@ namespace Tenants.Specs
         public const string ContainerKey = "Container";
         public const string ScopeKey = "Scope";
 
-        private static object _lock = new object();
+        private static readonly object Lock = new object();
         private static Startup _startup;
 
         public Startup()
         {
-            Options = ConfigureOptions();
+            Configuration = SetupConfiguration();
 
             IServiceCollection services = new ServiceCollection();
 
+            ConfigureLogging(services);
             ConfigureServices(services);
+        }
+
+        private void ConfigureLogging(IServiceCollection services)
+        {
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.ConfigurationSection(Configuration.GetSection("Logging"))
+                .WriteTo.Console()
+                .WriteTo.Seq("http://localhost:5341/")
+                .CreateLogger();
+
+            services.AddLogging(builder => builder.AddSerilog());
         }
 
         public IContainer Container { get; private set; }
 
         public TenantsDbSetup DbSetup { get; private set; }
 
-        public IConfigurationRoot Options { get; }
+        public IConfigurationRoot Configuration { get; }
 
         public static Startup Create()
         {
-            lock (_lock)
+            lock (Lock)
             {
                 if (_startup == null)
                 {
@@ -56,7 +70,7 @@ namespace Tenants.Specs
 
         private TenantsDbSetup ConfigureDabatase()
         {
-            string connectionString = Options["ConnectionStrings:DefaultConnection"];
+            string connectionString = Configuration["ConnectionStrings:DefaultConnection"];
 
             var dbSetup = new TenantsDbSetup(connectionString);
 
@@ -65,7 +79,7 @@ namespace Tenants.Specs
             return dbSetup;
         }
 
-        private IConfigurationRoot ConfigureOptions()
+        private IConfigurationRoot SetupConfiguration()
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath))

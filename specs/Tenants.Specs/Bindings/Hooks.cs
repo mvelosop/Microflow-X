@@ -1,5 +1,6 @@
 ﻿using Autofac;
-using Tenants;
+using Microsoft.Extensions.Logging;
+using Serilog;
 using TechTalk.SpecFlow;
 using Tenants.Specs;
 
@@ -17,6 +18,12 @@ namespace Budget.Specs.Bindings
             ScenarioContext scenarioContext)
         {
             _scenarioContext = scenarioContext;
+        }
+
+        [AfterTestRun]
+        public static void AfterTestRun()
+        {
+            Log.CloseAndFlush();
         }
 
         [BeforeTestRun]
@@ -56,6 +63,10 @@ namespace Budget.Specs.Bindings
             ILifetimeScope scope = GetLifetimeScope();
 
             _scenarioContext.Set(scope, Startup.ScopeKey);
+
+            var log = scope.Resolve<ILogger<Hooks>>();
+
+            log.LogInformation($"----- Hooks.BeforeStep - Scenario: {_scenarioContext.ScenarioInfo.Title}");
         }
 
         private ILifetimeScope GetLifetimeScope()
