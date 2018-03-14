@@ -224,6 +224,7 @@
       <DependentUpon>[1] - Manage Tenants.feature</DependentUpon>
     </Compile>
     <Compile Include="Helpers\TenantSpecData.cs" />
+    <Compile Include="MediatorSetup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

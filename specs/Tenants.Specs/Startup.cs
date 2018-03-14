@@ -49,10 +49,9 @@ namespace Tenants.Specs
 
         private void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule(new TenantsContainerSetup(DbSetup));
+            MediatorSetup.ConfigureMediator(builder);
 
-            //builder.RegisterAssemblyTypes(GetType().Assembly)
-            //    .Where(t => t.Name.EndsWith("Mapper"));
+            builder.RegisterModule(new TenantsContainerSetup(DbSetup));
         }
 
         private TenantsDbSetup ConfigureDabatase()
@@ -64,58 +63,6 @@ namespace Tenants.Specs
             dbSetup.ConfigureDatabase(migrateDatabase: true);
 
             return dbSetup;
-        }
-
-        private void ConfigureMediator(ContainerBuilder builder)
-        {
-            builder.RegisterAssemblyTypes(typeof(IMediator).GetTypeInfo().Assembly).AsImplementedInterfaces();
-
-            //builder
-            //    .RegisterType<Mediator>()
-            //    .As<IMediator>()
-            //    .InstancePerLifetimeScope();
-
-            // It appears Autofac returns the last registered types first
-
-            //builder.RegisterGeneric(typeof(RequestPostProcessorBehavior<,>)).As(typeof(IPipelineBehavior<,>));
-            //builder.RegisterGeneric(typeof(RequestPreProcessorBehavior<,>)).As(typeof(IPipelineBehavior<,>));
-            //builder.RegisterGeneric(typeof(GenericRequestPreProcessor<>)).As(typeof(IRequestPreProcessor<>));
-            //builder.RegisterGeneric(typeof(GenericRequestPostProcessor<,>)).As(typeof(IRequestPostProcessor<,>));
-            //builder.RegisterGeneric(typeof(GenericPipelineBehavior<,>)).As(typeof(IPipelineBehavior<,>));
-            //builder.RegisterGeneric(typeof(ConstrainedRequestPostProcessor<,>)).As(typeof(IRequestPostProcessor<,>));
-            //builder.RegisterGeneric(typeof(ConstrainedPingedHandler<>)).As(typeof(INotificationHandler<>));
-
-            //builder.Register<SingleInstanceFactory>(ctx =>
-            //{
-            //    var c = ctx.Resolve<IComponentContext>();
-
-            //    return t => c.Resolve(t);
-            //});
-
-            //builder.Register<MultiInstanceFactory>(ctx =>
-            //{
-            //    var c = ctx.Resolve<IComponentContext>();
-
-            //    return t => (IEnumerable<object>)c.Resolve(typeof(IEnumerable<>).MakeGenericType(t));
-            //});
-
-            // request handlers
-            builder
-                .Register<SingleInstanceFactory>(ctx =>
-                {
-                    var c = ctx.Resolve<IComponentContext>();
-                    return t => { object o; return c.TryResolve(t, out o) ? o : null; };
-                })
-                .InstancePerLifetimeScope();
-
-            // notification handlers
-            builder
-                .Register<MultiInstanceFactory>(ctx =>
-                {
-                    var c = ctx.Resolve<IComponentContext>();
-                    return t => (IEnumerable<object>)c.Resolve(typeof(IEnumerable<>).MakeGenericType(t));
-                })
-                .InstancePerLifetimeScope();
         }
 
         private IConfigurationRoot ConfigureOptions()
@@ -135,13 +82,10 @@ namespace Tenants.Specs
         {
             DbSetup = ConfigureDabatase();
 
-            //services.AddMediatR();
-
             var builder = new ContainerBuilder();
 
             builder.Populate(services);
 
-            ConfigureMediator(builder);
             ConfigureContainer(builder);
 
             Container = builder.Build();
