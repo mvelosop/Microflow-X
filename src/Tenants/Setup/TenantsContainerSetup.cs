@@ -31,13 +31,6 @@ namespace Tenants.Setup
                 .Where(t => t.Name.EndsWith("CommandHandler") || t.Name.EndsWith("QueryHandler"))
                 .AsImplementedInterfaces()
                 .InstancePerDependency();
-
-            var mediatrOpenTypes = new[]
-            {
-                typeof(IRequestHandler<,>),
-                typeof(IRequestHandler<>),
-                typeof(INotificationHandler<>),
-            };
         }
     }
 }
