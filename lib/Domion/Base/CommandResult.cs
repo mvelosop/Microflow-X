@@ -44,13 +44,13 @@ namespace Domion.Base
         }
 
         public CommandResult(IEnumerable<ValidationResult> validationResults)
-        : base(validationResults)
+            : base(validationResults)
         {
             Value = default(TResult);
         }
 
         public CommandResult(Exception ex)
-        : base(ex)
+            : base(ex)
         {
             Value = default(TResult);
         }

@@ -112,7 +112,7 @@ this.ScenarioSetup(scenarioInfo);
                         "tenant-b@server.com",
                         "Add Tenant B"});
 #line 18
-    testRunner.Then("when querying for \"Add\" tenants I get these:", ((string)(null)), table3, "Then ");
+    testRunner.Then("when querying for \"Add%\" tenants I get these:", ((string)(null)), table3, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -196,7 +196,7 @@ this.ScenarioSetup(scenarioInfo);
                         "tenant-f-modified@server.com",
                         "Modified Tenant F"});
 #line 54
-    testRunner.Then("when querying for \"Modified\" tenants I get these:", ((string)(null)), table7, "Then ");
+    testRunner.Then("when querying for \"Modified%\" tenants I get these:", ((string)(null)), table7, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -228,9 +228,9 @@ this.ScenarioSetup(scenarioInfo);
             table9.AddRow(new string[] {
                         "tenant-h@server.com",
                         "Insert Tenant H"});
-#line 68
+#line 67
     testRunner.And("I add tenants:", ((string)(null)), table9, "And ");
-#line 73
+#line 72
     testRunner.Then("I get error \"DuplicateByEmailError\" when trying to modify tenant\'s email from \"te" +
                     "nant-g@server.com\" to \"tenant-h@server.com\":", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -243,7 +243,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void Scenario_1_5_RemoveTenant()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Scenario - 1.5 - Remove tenant", ((string[])(null)));
-#line 76
+#line 75
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
@@ -252,7 +252,7 @@ this.ScenarioSetup(scenarioInfo);
                         "tenant-i@server.com"});
             table10.AddRow(new string[] {
                         "tenant-j@server.com"});
-#line 78
+#line 77
     testRunner.Given("these tenants don\'t exist:", ((string)(null)), table10, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
@@ -264,14 +264,14 @@ this.ScenarioSetup(scenarioInfo);
             table11.AddRow(new string[] {
                         "tenant-j@server.com",
                         "Removed Tenant J"});
-#line 84
+#line 83
     testRunner.And("I add tenants:", ((string)(null)), table11, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
                         "FindEmail"});
             table12.AddRow(new string[] {
                         "tenant-j@server.com"});
-#line 89
+#line 88
     testRunner.When("I remove these tenants:", ((string)(null)), table12, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
@@ -280,8 +280,8 @@ this.ScenarioSetup(scenarioInfo);
             table13.AddRow(new string[] {
                         "tenant-i@server.com",
                         "Removed Tenant I"});
-#line 93
-    testRunner.Then("when querying for \"Removed\" tenants I get these:", ((string)(null)), table13, "Then ");
+#line 92
+    testRunner.Then("when querying for \"Removed%\" tenants I get these:", ((string)(null)), table13, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

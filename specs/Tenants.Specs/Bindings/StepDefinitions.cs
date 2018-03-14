@@ -3,7 +3,6 @@ using Domion.Base;
 using Domion.Testing.Assertions;
 using FluentAssertions;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
@@ -14,7 +13,6 @@ using Tenants.App.Commands;
 using Tenants.App.Queries;
 using Tenants.Core.Model;
 using Tenants.Core.Repositories;
-using Tenants.Data.Extensions;
 using Tenants.Data.Repositories;
 using Tenants.Specs.Helpers;
 
