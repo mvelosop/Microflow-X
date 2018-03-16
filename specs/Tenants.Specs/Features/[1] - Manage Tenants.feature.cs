@@ -403,6 +403,26 @@ this.ScenarioSetup(scenarioInfo);
     testRunner.Then("I get error \"\'UpdateToken\' should not be empty.\" when I try to modify tenants wit" +
                     "hout control properties like so:", ((string)(null)), table21, "Then ");
 #line hidden
+            TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
+                        "FindEmail"});
+            table22.AddRow(new string[] {
+                        "tenant-m@server.com"});
+            table22.AddRow(new string[] {
+                        "tenant-n@server.com"});
+#line 140
+    testRunner.Then("I get error \"\'Id\' should not be empty.\" when I try to remove tenants without cont" +
+                    "rol properties like so:", ((string)(null)), table22, "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
+                        "FindEmail"});
+            table23.AddRow(new string[] {
+                        "tenant-m@server.com"});
+            table23.AddRow(new string[] {
+                        "tenant-n@server.com"});
+#line 145
+    testRunner.Then("I get error \"\'UpdateToken\' should not be empty.\" when I try to remove tenants wit" +
+                    "hout control properties like so:", ((string)(null)), table23, "Then ");
+#line hidden
             this.ScenarioCleanup();
         }
         

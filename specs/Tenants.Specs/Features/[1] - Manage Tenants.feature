@@ -137,3 +137,14 @@ Scenario: Secenario - 1.6 - Validation
         | tenant-m@server.com | tenant-m@server.com | Modified Tenant M |
         | tenant-n@server.com | tenant-m@server.com | Modified Tenant N |
 
+    Then I get error "'Id' should not be empty." when I try to remove tenants without control properties like so:
+        | FindEmail           | 
+        | tenant-m@server.com | 
+        | tenant-n@server.com | 
+
+    Then I get error "'UpdateToken' should not be empty." when I try to remove tenants without control properties like so:
+        | FindEmail           | 
+        | tenant-m@server.com | 
+        | tenant-n@server.com | 
+
+

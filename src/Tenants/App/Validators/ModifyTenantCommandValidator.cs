@@ -1,6 +1,5 @@
-﻿using System;
+﻿using FluentValidation;
 using System.Linq;
-using FluentValidation;
 using Tenants.App.Commands;
 
 namespace Tenants.App.Validators

@@ -1,9 +1,9 @@
-﻿using System;
-using Autofac;
+﻿using Autofac;
 using Domion.Base;
 using Domion.Testing.Assertions;
 using FluentAssertions;
 using MediatR;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
@@ -77,7 +77,7 @@ namespace Tenants.Specs.Bindings
         }
 
         [Then(@"I get error ""(.*)"" when I try to modify tenants like so:")]
-        public async Task  ThenIGetErrorWhenITryToModifyTenantsLikeSo(string errorMessage, Table table)
+        public async Task ThenIGetErrorWhenITryToModifyTenantsLikeSo(string errorMessage, Table table)
         {
             var dataList = table.CreateSet<TenantSpecData>();
 
@@ -108,6 +108,24 @@ namespace Tenants.Specs.Bindings
                 var command = new ModifyTenantCommand(Guid.Empty, data, updateToken);
 
                 CommandResult<Tenant> result = await GetTenantCommandResult(command);
+
+                result.Succeeded.Should().BeFalse();
+                result.ValidationMessages.Should().Contain(errorMessage);
+            }
+        }
+
+        [Then(@"I get error ""(.*)"" when I try to remove tenants without control properties like so:")]
+        public async Task ThenIGetErrorWhenITryToRemoveTenantsWithoutControlPropertiesLikeSo(string errorMessage, Table table)
+        {
+            var dataList = table.CreateSet<TenantSpecData>();
+
+            foreach (TenantSpecData data in dataList)
+            {
+                var updateToken = new byte[8];
+
+                var command = new RemoveTenantCommand(Guid.Empty, updateToken);
+
+                CommandResult result = await GetTenantCommandResult(command);
 
                 result.Succeeded.Should().BeFalse();
                 result.ValidationMessages.Should().Contain(errorMessage);
@@ -236,6 +254,15 @@ namespace Tenants.Specs.Bindings
             var propInfo = typeof(TenantRepository).GetField(errorMessage);
 
             return (string)propInfo.GetValue(null);
+        }
+
+        private async Task<CommandResult> GetTenantCommandResult(IRequest<CommandResult> request)
+        {
+            var mediator = Resolve<IMediator>();
+
+            var response = await mediator.Send(request);
+
+            return response;
         }
 
         private async Task<CommandResult<Tenant>> GetTenantCommandResult(IRequest<CommandResult<Tenant>> request)
