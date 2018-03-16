@@ -311,7 +311,16 @@ this.ScenarioSetup(scenarioInfo);
             table15.AddRow(new string[] {
                         "New Tenant L"});
 #line 103
-    testRunner.Then("I get error \"Email required\" when I try to add these tenants:", ((string)(null)), table15, "Then ");
+    testRunner.Then("I get error \"\'Email\' should not be empty.\" when I try to add these tenants:", ((string)(null)), table15, "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Email"});
+            table16.AddRow(new string[] {
+                        "tenant-k@server.com"});
+            table16.AddRow(new string[] {
+                        "tenant-l@server.com"});
+#line 108
+    testRunner.Then("I get error \"\'Name\' should not be empty.\" when I try to add these tenants:", ((string)(null)), table16, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

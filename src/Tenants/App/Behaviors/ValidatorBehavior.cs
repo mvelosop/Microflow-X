@@ -12,7 +12,7 @@ namespace Tenants.App.Behaviors
 {
     public class ValidatorBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
-        where TResponse : CommandResult
+        where TResponse : CommandResult, new()
     {
         private readonly ILogger<ValidatorBehavior<TRequest, TResponse>> _logger;
         private readonly IValidator<TRequest>[] _validators;
@@ -27,7 +27,7 @@ namespace Tenants.App.Behaviors
 
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
-            _logger.LogInformation("Validating request {RequestName}; validators: {Count}; value: {@RequestValue}", typeof(TRequest).Name, _validators.Length, request);
+            _logger.LogInformation("Validating {RequestName}; validators: {Count}; value: {@RequestValue}", typeof(TRequest).Name, _validators.Length, request);
 
             List<ValidationFailure> failures = _validators
                 .Select(v => v.Validate(request))
@@ -37,9 +37,13 @@ namespace Tenants.App.Behaviors
 
             if (failures.Any())
             {
-                _logger.LogInformation("{RequestName} validation failures: {@Failures}", typeof(TRequest), failures);
+                _logger.LogWarning("{RequestName} validation failures: {@Failures}", typeof(TRequest).Name, failures);
 
-                return new CommandResult(failures) as TResponse;
+                var response = new TResponse { ValidationFailures = failures };
+
+                _logger.LogDebug("{RequestName} validation response: {@Response}", typeof(TRequest).Name, response);
+
+                return response;
             }
 
             return await next();

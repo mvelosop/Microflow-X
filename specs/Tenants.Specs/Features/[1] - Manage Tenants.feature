@@ -100,7 +100,12 @@ Scenario: Secenario - 1.6 - Validation
         | tenant-k@server.com |
         | tenant-l@server.com |
 
-    Then I get error "Email required" when I try to add these tenants:
+    Then I get error "'Email' should not be empty." when I try to add these tenants:
         | Name         |
         | New Tenant K |
         | New Tenant L |
+
+    Then I get error "'Name' should not be empty." when I try to add these tenants:
+        | Email               |
+        | tenant-k@server.com |
+        | tenant-l@server.com |

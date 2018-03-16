@@ -1,6 +1,7 @@
 ﻿using FluentValidation.Results;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 
 using ValidationResult = System.ComponentModel.DataAnnotations.ValidationResult;
@@ -47,7 +48,7 @@ namespace Domion.Base
 
         public bool Succeeded { get; }
 
-        public List<ValidationFailure> ValidationFailures { get; }
+        public List<ValidationFailure> ValidationFailures { get; set; }
 
         public List<string> ValidationMessages => GetValidationMessages();
 
@@ -75,6 +76,12 @@ namespace Domion.Base
 
     public class CommandResult<TResult> : CommandResult
     {
+        public CommandResult()
+            :base(false)
+        {
+            
+        }
+
         public CommandResult(TResult value)
             : base(true)
         {

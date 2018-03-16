@@ -16,7 +16,7 @@ namespace Tenants.App.Behaviors
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
 
-            _logger.LogInformation("Handling {RequestName}; value: {@RequestValue}", typeof(TRequest).Name, request);
+            _logger.LogInformation("Logging {RequestName}; request: {@Request}", typeof(TRequest).Name, request);
 
             try
             {
@@ -26,13 +26,13 @@ namespace Tenants.App.Behaviors
                 TResponse response = await next();
                 sw.Stop();
 
-                _logger.LogInformation("Handled {RequestName}; elapsed time (ms): {Time:F3}; value: {@Response}", typeof(TRequest).Name, sw.Elapsed.TotalMilliseconds, response);
+                _logger.LogInformation("Logged {RequestName}; elapsed time (ms): {Time:F3}; response: {@Response}", typeof(TRequest).Name, sw.Elapsed.TotalMilliseconds, response);
 
                 return response;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.InnerException, "{ExceptionType} handling {RequestName} (InnerException)", ex.InnerException.GetType().Name, typeof(TRequest).Name);
+                _logger.LogError(ex.InnerException, "{ExceptionType} logging {RequestName} (InnerException)", ex.InnerException.GetType().Name, typeof(TRequest).Name);
 
                 return default(TResponse);
             }

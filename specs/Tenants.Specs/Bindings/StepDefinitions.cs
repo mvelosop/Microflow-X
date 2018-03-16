@@ -71,7 +71,7 @@ namespace Tenants.Specs.Bindings
                 CommandResult<Tenant> result = await GetTenantCommandResult(command);
 
                 result.Succeeded.Should().BeFalse();
-                result.ValidationMessages.Should().Contain(m => m.Contains(errorMessage));
+                result.ValidationMessages.Should().Contain(errorMessage);
             }
         }
 
