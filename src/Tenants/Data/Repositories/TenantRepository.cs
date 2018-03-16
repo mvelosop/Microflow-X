@@ -37,13 +37,13 @@ namespace Tenants.Data.Repositories
             return FindByEmailAsync(email, Guid.Empty);
         }
 
-        public Task<Tenant> FindByEmailAsync(string email, Guid id)
+        public Task<Tenant> FindByEmailAsync(string email, Guid ignoreId)
         {
             var query = QueryInternal(t => t.Email == email);
 
-            if (id != Guid.Empty)
+            if (ignoreId != Guid.Empty)
             {
-                query = query.Where(t => t.Id != id);
+                query = query.Where(t => t.Id != ignoreId);
             }
 
             return query.SingleOrDefaultAsync();
