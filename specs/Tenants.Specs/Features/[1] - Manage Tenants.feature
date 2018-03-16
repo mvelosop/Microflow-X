@@ -69,7 +69,7 @@ Scenario: Scenario - 1.4 - Avoid duplicate email when modifying tenant
         | tenant-g@server.com | Insert Tenant G |
         | tenant-h@server.com | Insert Tenant H |
 
-    Then I get error "DuplicateByEmailError" when trying to modify tenant's email from "tenant-g@server.com" to "tenant-h@server.com":
+    Then I get error "'Email' should not exist." when trying to modify tenant's email from "tenant-g@server.com" to "tenant-h@server.com":
 
 
 Scenario: Scenario - 1.5 - Remove tenant

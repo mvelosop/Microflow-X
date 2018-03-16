@@ -10,13 +10,11 @@ namespace Domion.Base
 {
     public class CommandResult
     {
-        private static readonly List<ValidationResult> NoValidationResults = new List<ValidationResult>();
         private static readonly List<ValidationFailure> NoValidationFailures = new List<ValidationFailure>();
 
         public CommandResult()
         {
             Succeeded = false;
-            ValidationResults = NoValidationResults;
             ValidationFailures = NoValidationFailures;
         }
 
@@ -30,12 +28,6 @@ namespace Domion.Base
             : this()
         {
             ValidationFailures = validationFailures;
-        }
-
-        public CommandResult(List<ValidationResult> validationResults)
-            : this()
-        {
-            ValidationResults = validationResults;
         }
 
         public CommandResult(Exception ex)
@@ -52,18 +44,11 @@ namespace Domion.Base
 
         public List<string> ValidationMessages => GetValidationMessages();
 
-        public List<ValidationResult> ValidationResults { get; }
-
         private List<string> GetValidationMessages()
         {
             if (Succeeded) return Enumerable.Empty<string>().ToList();
 
             var messageList = new List<string>();
-
-            if (ValidationResults != NoValidationResults)
-            {
-                messageList.AddRange(ValidationResults.Select(vr => vr.ErrorMessage).ToList());
-            }
 
             if (ValidationFailures.Any())
             {
@@ -86,11 +71,6 @@ namespace Domion.Base
             : base(true)
         {
             Value = value;
-        }
-
-        public CommandResult(List<ValidationResult> validationResults)
-            : base(validationResults)
-        {
         }
 
         public CommandResult(List<ValidationFailure> validationFailures)

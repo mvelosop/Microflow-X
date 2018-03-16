@@ -8,14 +8,9 @@
 //  Original author: Miguel
 //------------------------------------------------------------------------------
 
-using Domion.Base;
 using Domion.Data.Base;
-using Domion.Data.Extensions;
-using Domion.Lib;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Tenants.Core.Model;
@@ -26,91 +21,23 @@ namespace Tenants.Data.Repositories
 {
     public class TenantRepository : EntityRepository<Tenant>, ITenantRepository
     {
-        public static readonly string DuplicateByEmailError = @"There's another Tenant with Email ""{0}"", can't duplicate! (Id={1})";
-
         /// <inheritdoc />
         public TenantRepository(TenantsDbContext dbContext)
             : base(dbContext)
         {
         }
 
+        public new virtual void Delete(Tenant entity)
+        {
+            base.Delete(entity);
+        }
+
         public Task<Tenant> FindByEmailAsync(string email)
         {
-            return FindByEmailInternal(email, Guid.Empty);
+            return FindByEmailAsync(email, Guid.Empty);
         }
 
-        public Task<Tenant> FindByIdAsync(Guid id)
-        {
-            return QueryInternal(t => t.Id == id).SingleOrDefaultAsync();
-        }
-
-        public Task<Tenant> FindDuplicateByEmailAsync(Tenant entity)
-        {
-            return FindByEmailInternal(entity.Email, entity.Id);
-        }
-
-        public new virtual Task<int> SaveChangesAsync()
-        {
-            return base.SaveChangesAsync();
-        }
-
-        public new virtual Task<List<ValidationResult>> TryDeleteAsync(Tenant entity)
-        {
-            if (entity.UpdateToken == null || entity.UpdateToken.Length == 0) throw new InvalidOperationException($"Missing {nameof(entity.UpdateToken)} on Delete");
-
-            return base.TryDeleteAsync(entity);
-        }
-
-        public new virtual Task<List<ValidationResult>> TryInsertAsync(Tenant entity)
-        {
-            if (entity.UpdateToken != null && entity.UpdateToken.Length > 0) throw new InvalidOperationException($"Existing {nameof(entity.UpdateToken)} on Insert");
-
-            CommonSaveOperations(entity);
-
-            return base.TryInsertAsync(entity);
-        }
-
-        public new virtual Task<List<ValidationResult>> TryUpdateAsync(Tenant entity)
-        {
-            if (entity.UpdateToken == null || entity.UpdateToken.Length == 0) throw new InvalidOperationException($"Missing {nameof(entity.UpdateToken)} on Update");
-
-            CommonSaveOperations(entity);
-
-            return base.TryUpdateAsync(entity);
-        }
-
-        public virtual Task<List<ValidationResult>> TryUpsertAsync(Tenant entity)
-        {
-            return entity.Id == Guid.Empty ? TryInsertAsync(entity) : TryUpdateAsync(entity);
-        }
-
-        /// <summary>
-        ///     Performs operations that have to be executed both on inserts and updates.
-        /// </summary>
-        internal virtual void CommonSaveOperations(Tenant entity)
-        {
-            TrimStrings(entity);
-        }
-
-        protected override Task<List<ValidationResult>> ValidateDeleteAsync(Tenant entity)
-        {
-            return base.ValidateDeleteAsync(entity);
-        }
-
-        /// <inheritdoc />
-        protected override async Task<List<ValidationResult>> ValidateSaveAsync(Tenant entity)
-        {
-            Tenant duplicateByEmail = await this.FindDuplicateByEmailAsync(entity);
-
-            if (duplicateByEmail != null)
-            {
-                return Errors.ErrorList(DuplicateByEmailError, new object[] { duplicateByEmail.Email, duplicateByEmail.Id }, new[] { "Name" });
-            }
-
-            return Errors.NoError;
-        }
-
-        private Task<Tenant> FindByEmailInternal(string email, Guid id)
+        public Task<Tenant> FindByEmailAsync(string email, Guid id)
         {
             var query = QueryInternal(t => t.Email == email);
 
@@ -120,6 +47,50 @@ namespace Tenants.Data.Repositories
             }
 
             return query.SingleOrDefaultAsync();
+        }
+
+        public Task<Tenant> FindByIdAsync(Guid id)
+        {
+            return QueryInternal(t => t.Id == id).SingleOrDefaultAsync();
+        }
+
+        public new virtual void Insert(Tenant entity)
+        {
+            CommonSaveOperations(entity);
+
+            base.Insert(entity);
+        }
+
+        public new virtual Task<int> SaveChangesAsync()
+        {
+            return base.SaveChangesAsync();
+        }
+
+        public new virtual void Update(Tenant entity)
+        {
+            CommonSaveOperations(entity);
+
+            base.Update(entity);
+        }
+
+        public virtual void Upsert(Tenant entity)
+        {
+            if (entity.Id == Guid.Empty)
+            {
+                Insert(entity);
+            }
+            else
+            {
+                Update(entity);
+            }
+        }
+
+        /// <summary>
+        ///     Performs operations that have to be executed both on inserts and updates.
+        /// </summary>
+        internal virtual void CommonSaveOperations(Tenant entity)
+        {
+            TrimStrings(entity);
         }
 
         private void TrimStrings(Tenant entity)
