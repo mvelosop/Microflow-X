@@ -3,10 +3,10 @@ using Tenants.App.Base;
 
 namespace Tenants.App.Validators
 {
-    public class TenantCommandValidator<T> : AbstractValidator<T>
+    public class TenantDataCommandValidator<T> : AbstractValidator<T>
         where T : TenantDataCommand
     {
-        public TenantCommandValidator()
+        public TenantDataCommandValidator()
         {
             RuleFor(c => c.Email).NotEmpty();
             RuleFor(c => c.Name).NotEmpty();

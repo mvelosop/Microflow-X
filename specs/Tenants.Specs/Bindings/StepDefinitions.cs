@@ -57,7 +57,7 @@ namespace Tenants.Specs.Bindings
             CommandResult<Tenant> result = await GetTenantCommandResult(command);
 
             result.Succeeded.Should().BeFalse();
-            result.ValidationResults.Should().ContainErrorMessage(TenantRepository.DuplicateByEmailError);
+            result.ValidationMessages.Should().Contain("'Email' should not exist.");
         }
 
         [Then(@"I get error ""(.*)"" when I try to add these tenants:")]
@@ -135,8 +135,6 @@ namespace Tenants.Specs.Bindings
         [Then(@"I get error ""(.*)"" when trying to modify tenant's email from ""(.*)"" to ""(.*)"":")]
         public async Task ThenIGetWhenTryingToModifyTenantSEmailFromTo(string errorMessage, string findEmail, string modifyEmail)
         {
-            string errorText = GetErrorText(errorMessage);
-
             var repo = Resolve<ITenantRepository>();
 
             var entity = await repo.FindByEmailAsync(findEmail);
@@ -151,7 +149,7 @@ namespace Tenants.Specs.Bindings
             CommandResult<Tenant> result = await GetTenantCommandResult(command);
 
             result.Succeeded.Should().BeFalse();
-            result.ValidationResults.Should().ContainErrorMessage(errorText);
+            result.ValidationMessages.Should().Contain(errorMessage);
         }
 
         [Then(@"when querying for ""(.*)"" tenants I get these:")]
@@ -197,7 +195,7 @@ namespace Tenants.Specs.Bindings
 
                 var result = await mediator.Send(new ModifyTenantCommand(entity.Id, data, entity.UpdateToken));
 
-                result.ValidationResults.Should().BeEmpty();
+                result.ValidationMessages.Should().BeEmpty();
                 result.Succeeded.Should().BeTrue();
             }
         }
@@ -217,7 +215,7 @@ namespace Tenants.Specs.Bindings
 
                 var result = await mediator.Send(new RemoveTenantCommand(entity.Id, entity.UpdateToken));
 
-                result.ValidationResults.Should().BeEmpty();
+                result.ValidationMessages.Should().BeEmpty();
                 result.Succeeded.Should().BeTrue();
             }
         }
@@ -228,7 +226,7 @@ namespace Tenants.Specs.Bindings
 
             CommandResult<Tenant> result = await GetTenantCommandResult(command);
 
-            result.ValidationResults.Should().BeEmpty();
+            result.ValidationMessages.Should().BeEmpty();
             result.Succeeded.Should().BeTrue();
 
             return result.Value;
@@ -242,9 +240,7 @@ namespace Tenants.Specs.Bindings
 
             if (tenant == null) return;
 
-            List<ValidationResult> errors = await repo.TryDeleteAsync(tenant);
-
-            errors.Should().BeEmpty();
+            repo.Delete(tenant);
 
             await repo.SaveChangesAsync();
         }

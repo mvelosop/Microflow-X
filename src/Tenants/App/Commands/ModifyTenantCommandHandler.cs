@@ -1,9 +1,6 @@
 ﻿using Domion.Base;
 using MediatR;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Tenants.Core.Model;
@@ -30,9 +27,7 @@ namespace Tenants.App.Commands
             entity.Name = request.Name;
             entity.UpdateToken = request.UpdateToken;
 
-            List<ValidationResult> validationResults = await _repo.TryUpdateAsync(entity);
-
-            if (validationResults.Any()) return new CommandResult<Tenant>(validationResults);
+            _repo.Update(entity);
 
             await _repo.SaveChangesAsync();
 

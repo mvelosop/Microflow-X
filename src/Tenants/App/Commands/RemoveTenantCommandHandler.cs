@@ -1,9 +1,6 @@
 ﻿using Domion.Base;
 using MediatR;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Tenants.Core.Model;
@@ -28,9 +25,7 @@ namespace Tenants.App.Commands
 
             entity.UpdateToken = request.UpdateToken;
 
-            List<ValidationResult> validationResults = await _repo.TryDeleteAsync(entity);
-
-            if (validationResults.Any()) return new CommandResult(validationResults);
+            _repo.Delete(entity);
 
             await _repo.SaveChangesAsync();
 

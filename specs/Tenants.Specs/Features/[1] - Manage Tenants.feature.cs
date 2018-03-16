@@ -231,8 +231,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 67
     testRunner.And("I add tenants:", ((string)(null)), table9, "And ");
 #line 72
-    testRunner.Then("I get error \"DuplicateByEmailError\" when trying to modify tenant\'s email from \"te" +
-                    "nant-g@server.com\" to \"tenant-h@server.com\":", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+    testRunner.Then("I get error \"\'Email\' should not exist.\" when trying to modify tenant\'s email from" +
+                    " \"tenant-g@server.com\" to \"tenant-h@server.com\":", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
