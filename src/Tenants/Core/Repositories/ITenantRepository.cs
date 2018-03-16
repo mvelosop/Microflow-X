@@ -11,7 +11,7 @@ namespace Tenants.Core.Repositories
 
         Task<Tenant> FindByEmailAsync(string email);
 
-        Task<Tenant> FindByEmailAsync(string email, Guid id);
+        Task<Tenant> FindByEmailAsync(string email, Guid ignoreId);
 
         void Insert(Tenant entity);
 
