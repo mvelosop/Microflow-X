@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using FluentValidation;
 using MediatR;
 
 namespace Tenants.Setup
@@ -21,6 +22,12 @@ namespace Tenants.Setup
                 .Where(t => t.Name.EndsWith("Repository"))
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
+
+            builder.RegisterAssemblyTypes(ThisAssembly)
+                .Where(t => t.Name.EndsWith("Validator"))
+                .Where(t => t.IsClosedTypeOf(typeof(IValidator<>)))
+                .AsImplementedInterfaces()
+                .InstancePerDependency();
 
             builder.RegisterAssemblyTypes(ThisAssembly)
                 .Where(t => t.Name.EndsWith("Command") || t.Name.EndsWith("Query"))

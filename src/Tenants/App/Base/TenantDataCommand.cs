@@ -8,12 +8,7 @@ namespace Tenants.App.Base
 
         protected TenantDataCommand(TenantData data)
         {
-            if (data == null) throw new ArgumentNullException(nameof(data));
-
-            if (string.IsNullOrWhiteSpace(data.Email)) throw new ArgumentException("Value cannot be null or whitespace.", nameof(data.Email));
-            if (string.IsNullOrWhiteSpace(data.Name)) throw new ArgumentException("Value cannot be null or whitespace.", nameof(data.Name));
-
-            _data = data;
+            _data = data ?? throw new ArgumentNullException(nameof(data));
         }
 
         public virtual string Email => _data.Email;

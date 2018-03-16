@@ -79,7 +79,6 @@ Scenario: Scenario - 1.5 - Remove tenant
         | tenant-i@server.com |
         | tenant-j@server.com |
 
-
     And I add tenants:
         | Email               | Name             |
         | tenant-i@server.com | Removed Tenant I |
@@ -92,3 +91,60 @@ Scenario: Scenario - 1.5 - Remove tenant
     Then when querying for "Removed%" tenants I get these:
         | Email               | Name             |
         | tenant-i@server.com | Removed Tenant I |
+
+
+Scenario: Secenario - 1.6 - Validation
+
+    Given these tenants don't exist:
+        | Email               |
+        | tenant-k@server.com |
+        | tenant-l@server.com |
+        | tenant-m@server.com |
+        | tenant-n@server.com |
+
+    And I add tenants:
+        | Email               | Name            |
+        | tenant-m@server.com | Insert Tenant M |
+        | tenant-n@server.com | Insert Tenant N |
+
+    Then I get error "'Email' should not be empty." when I try to add these tenants:
+        | Name         |
+        | New Tenant K |
+        | New Tenant L |
+
+    Then I get error "'Name' should not be empty." when I try to add these tenants:
+        | Email               | Name |
+        | tenant-k@server.com |      |
+        | tenant-l@server.com |      |
+
+    Then I get error "'Email' should not be empty." when I try to modify tenants like so:
+        | FindEmail           | Email | Name            |
+        | tenant-m@server.com |       | Insert Tenant M |
+        | tenant-n@server.com |       | Insert Tenant N |
+
+    Then I get error "'Name' should not be empty." when I try to modify tenants like so:
+        | FindEmail           | Email               | Name |
+        | tenant-m@server.com | tenant-m@server.com |      |
+        | tenant-n@server.com | tenant-m@server.com |      |
+
+    Then I get error "'Id' should not be empty." when I try to modify tenants without control properties like so:
+        | FindEmail           | Email               | Name              |
+        | tenant-m@server.com | tenant-m@server.com | Modified Tenant M |
+        | tenant-n@server.com | tenant-m@server.com | Modified Tenant N |
+
+    Then I get error "'UpdateToken' should not be empty." when I try to modify tenants without control properties like so:
+        | FindEmail           | Email               | Name              |
+        | tenant-m@server.com | tenant-m@server.com | Modified Tenant M |
+        | tenant-n@server.com | tenant-m@server.com | Modified Tenant N |
+
+    Then I get error "'Id' should not be empty." when I try to remove tenants without control properties like so:
+        | FindEmail           | 
+        | tenant-m@server.com | 
+        | tenant-n@server.com | 
+
+    Then I get error "'UpdateToken' should not be empty." when I try to remove tenants without control properties like so:
+        | FindEmail           | 
+        | tenant-m@server.com | 
+        | tenant-n@server.com | 
+
+
