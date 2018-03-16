@@ -10,9 +10,7 @@ namespace Tenants.App.Commands
         public RemoveTenantCommand(Guid id, byte[] updateToken)
         {
             Id = id;
-            UpdateToken = updateToken ?? throw new ArgumentNullException(nameof(updateToken));
-
-            if (updateToken.Length == 0) throw new ArgumentException("Value cannot be an empty collection.", nameof(updateToken));
+            UpdateToken = updateToken;
         }
 
         public Guid Id { get; }

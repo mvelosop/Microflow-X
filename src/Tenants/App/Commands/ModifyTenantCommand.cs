@@ -12,9 +12,7 @@ namespace Tenants.App.Commands
             : base(data)
         {
             Id = id;
-            UpdateToken = updateToken ?? throw new ArgumentNullException(nameof(updateToken));
-
-            if (updateToken.Length == 0) throw new ArgumentException("Value cannot be an empty collection.", nameof(updateToken));
+            UpdateToken = updateToken;
         }
 
         public Guid Id { get; }

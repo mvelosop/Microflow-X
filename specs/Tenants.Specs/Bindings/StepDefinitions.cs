@@ -3,6 +3,7 @@ using Domion.Base;
 using Domion.Testing.Assertions;
 using FluentAssertions;
 using MediatR;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
@@ -57,6 +58,78 @@ namespace Tenants.Specs.Bindings
 
             result.Succeeded.Should().BeFalse();
             result.ValidationResults.Should().ContainErrorMessage(TenantRepository.DuplicateByEmailError);
+        }
+
+        [Then(@"I get error ""(.*)"" when I try to add these tenants:")]
+        public async Task ThenIGetErrorWhenITryToAddTheseTenants(string errorMessage, Table table)
+        {
+            var dataList = table.CreateSet<TenantData>();
+
+            foreach (var data in dataList)
+            {
+                var command = new AddTenantCommand(data);
+
+                CommandResult<Tenant> result = await GetTenantCommandResult(command);
+
+                result.Succeeded.Should().BeFalse();
+                result.ValidationMessages.Should().Contain(errorMessage);
+            }
+        }
+
+        [Then(@"I get error ""(.*)"" when I try to modify tenants like so:")]
+        public async Task ThenIGetErrorWhenITryToModifyTenantsLikeSo(string errorMessage, Table table)
+        {
+            var dataList = table.CreateSet<TenantSpecData>();
+
+            var repo = Resolve<ITenantRepository>();
+
+            foreach (TenantSpecData data in dataList)
+            {
+                var entity = await repo.FindByEmailAsync(data.FindEmail);
+
+                var command = new ModifyTenantCommand(entity.Id, data, entity.UpdateToken);
+
+                CommandResult<Tenant> result = await GetTenantCommandResult(command);
+
+                result.Succeeded.Should().BeFalse();
+                result.ValidationMessages.Should().Contain(errorMessage);
+            }
+        }
+
+        [Then(@"I get error ""(.*)"" when I try to modify tenants without control properties like so:")]
+        public async Task ThenIGetErrorWhenITryToModifyTenantsWithoutControlPropertiesLikeSo(string errorMessage, Table table)
+        {
+            var dataList = table.CreateSet<TenantSpecData>();
+
+            foreach (TenantSpecData data in dataList)
+            {
+                var updateToken = new byte[8];
+
+                var command = new ModifyTenantCommand(Guid.Empty, data, updateToken);
+
+                CommandResult<Tenant> result = await GetTenantCommandResult(command);
+
+                result.Succeeded.Should().BeFalse();
+                result.ValidationMessages.Should().Contain(errorMessage);
+            }
+        }
+
+        [Then(@"I get error ""(.*)"" when I try to remove tenants without control properties like so:")]
+        public async Task ThenIGetErrorWhenITryToRemoveTenantsWithoutControlPropertiesLikeSo(string errorMessage, Table table)
+        {
+            var dataList = table.CreateSet<TenantSpecData>();
+
+            foreach (TenantSpecData data in dataList)
+            {
+                var updateToken = new byte[8];
+
+                var command = new RemoveTenantCommand(Guid.Empty, updateToken);
+
+                CommandResult result = await GetTenantCommandResult(command);
+
+                result.Succeeded.Should().BeFalse();
+                result.ValidationMessages.Should().Contain(errorMessage);
+            }
         }
 
         [Then(@"I get error ""(.*)"" when trying to modify tenant's email from ""(.*)"" to ""(.*)"":")]
@@ -183,11 +256,22 @@ namespace Tenants.Specs.Bindings
             return (string)propInfo.GetValue(null);
         }
 
-        private Task<CommandResult<Tenant>> GetTenantCommandResult(IRequest<CommandResult<Tenant>> request)
+        private async Task<CommandResult> GetTenantCommandResult(IRequest<CommandResult> request)
         {
             var mediator = Resolve<IMediator>();
 
-            return mediator.Send(request);
+            var response = await mediator.Send(request);
+
+            return response;
+        }
+
+        private async Task<CommandResult<Tenant>> GetTenantCommandResult(IRequest<CommandResult<Tenant>> request)
+        {
+            var mediator = Resolve<IMediator>();
+
+            var response = await mediator.Send(request);
+
+            return response;
         }
 
         private T Resolve<T>() where T : class
