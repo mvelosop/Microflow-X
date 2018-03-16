@@ -8,9 +8,5 @@ namespace Tenants.App.Validators
 {
     public class AddTenantCommandValidator : TenantCommandValidator<AddTenantCommand>
     {
-        public AddTenantCommandValidator()
-            : base()
-        {
-        }
     }
 }

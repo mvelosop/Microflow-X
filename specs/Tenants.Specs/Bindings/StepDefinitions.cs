@@ -1,4 +1,5 @@
-﻿using Autofac;
+﻿using System;
+using Autofac;
 using Domion.Base;
 using Domion.Testing.Assertions;
 using FluentAssertions;
@@ -67,6 +68,44 @@ namespace Tenants.Specs.Bindings
             foreach (var data in dataList)
             {
                 var command = new AddTenantCommand(data);
+
+                CommandResult<Tenant> result = await GetTenantCommandResult(command);
+
+                result.Succeeded.Should().BeFalse();
+                result.ValidationMessages.Should().Contain(errorMessage);
+            }
+        }
+
+        [Then(@"I get error ""(.*)"" when I try to modify tenants like so:")]
+        public async Task  ThenIGetErrorWhenITryToModifyTenantsLikeSo(string errorMessage, Table table)
+        {
+            var dataList = table.CreateSet<TenantSpecData>();
+
+            var repo = Resolve<ITenantRepository>();
+
+            foreach (TenantSpecData data in dataList)
+            {
+                var entity = await repo.FindByEmailAsync(data.FindEmail);
+
+                var command = new ModifyTenantCommand(entity.Id, data, entity.UpdateToken);
+
+                CommandResult<Tenant> result = await GetTenantCommandResult(command);
+
+                result.Succeeded.Should().BeFalse();
+                result.ValidationMessages.Should().Contain(errorMessage);
+            }
+        }
+
+        [Then(@"I get error ""(.*)"" when I try to modify tenants without control properties like so:")]
+        public async Task ThenIGetErrorWhenITryToModifyTenantsWithoutControlPropertiesLikeSo(string errorMessage, Table table)
+        {
+            var dataList = table.CreateSet<TenantSpecData>();
+
+            foreach (TenantSpecData data in dataList)
+            {
+                var updateToken = new byte[8];
+
+                var command = new ModifyTenantCommand(Guid.Empty, data, updateToken);
 
                 CommandResult<Tenant> result = await GetTenantCommandResult(command);
 

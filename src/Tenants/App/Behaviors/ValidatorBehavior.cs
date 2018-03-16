@@ -4,6 +4,7 @@ using FluentValidation.Results;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,7 +28,11 @@ namespace Tenants.App.Behaviors
 
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
-            _logger.LogInformation("Validating {RequestName}; validators: {Count}; value: {@RequestValue}", typeof(TRequest).Name, _validators.Length, request);
+            _logger.LogInformation("Validating {RequestName} - validators: {Count}; value: {@RequestValue}", typeof(TRequest).Name, _validators.Length, request);
+
+            var sw = new Stopwatch();
+
+            sw.Start();
 
             List<ValidationFailure> failures = _validators
                 .Select(v => v.Validate(request))
@@ -35,18 +40,24 @@ namespace Tenants.App.Behaviors
                 .Where(error => error != null)
                 .ToList();
 
+            TResponse response;
+
             if (failures.Any())
             {
-                _logger.LogWarning("{RequestName} validation failures: {@Failures}", typeof(TRequest).Name, failures);
+                _logger.LogWarning("Validated {RequestName} - failures: {@Failures}", typeof(TRequest).Name, failures);
 
-                var response = new TResponse { ValidationFailures = failures };
-
-                _logger.LogDebug("{RequestName} validation response: {@Response}", typeof(TRequest).Name, response);
-
-                return response;
+                response = new TResponse { ValidationFailures = failures };
+            }
+            else
+            {
+                response = await next();
             }
 
-            return await next();
+            sw.Stop();
+
+            _logger.LogDebug("Validated {RequestName} - elapsed time (ms): {Time:F3}; response: {@Response}", typeof(TRequest).Name, sw.Elapsed.TotalMilliseconds, response);
+
+            return response;
         }
     }
 }

@@ -301,26 +301,107 @@ this.ScenarioSetup(scenarioInfo);
                         "tenant-k@server.com"});
             table14.AddRow(new string[] {
                         "tenant-l@server.com"});
+            table14.AddRow(new string[] {
+                        "tenant-m@server.com"});
+            table14.AddRow(new string[] {
+                        "tenant-n@server.com"});
 #line 98
     testRunner.Given("these tenants don\'t exist:", ((string)(null)), table14, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Email",
                         "Name"});
             table15.AddRow(new string[] {
-                        "New Tenant K"});
+                        "tenant-m@server.com",
+                        "Insert Tenant M"});
             table15.AddRow(new string[] {
-                        "New Tenant L"});
-#line 103
-    testRunner.Then("I get error \"\'Email\' should not be empty.\" when I try to add these tenants:", ((string)(null)), table15, "Then ");
+                        "tenant-n@server.com",
+                        "Insert Tenant N"});
+#line 105
+    testRunner.And("I add tenants:", ((string)(null)), table15, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Email"});
+                        "Name"});
             table16.AddRow(new string[] {
-                        "tenant-k@server.com"});
+                        "New Tenant K"});
             table16.AddRow(new string[] {
-                        "tenant-l@server.com"});
-#line 108
-    testRunner.Then("I get error \"\'Name\' should not be empty.\" when I try to add these tenants:", ((string)(null)), table16, "Then ");
+                        "New Tenant L"});
+#line 110
+    testRunner.Then("I get error \"\'Email\' should not be empty.\" when I try to add these tenants:", ((string)(null)), table16, "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Email",
+                        "Name"});
+            table17.AddRow(new string[] {
+                        "tenant-k@server.com",
+                        ""});
+            table17.AddRow(new string[] {
+                        "tenant-l@server.com",
+                        ""});
+#line 115
+    testRunner.Then("I get error \"\'Name\' should not be empty.\" when I try to add these tenants:", ((string)(null)), table17, "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
+                        "FindEmail",
+                        "Email",
+                        "Name"});
+            table18.AddRow(new string[] {
+                        "tenant-m@server.com",
+                        "",
+                        "Insert Tenant M"});
+            table18.AddRow(new string[] {
+                        "tenant-n@server.com",
+                        "",
+                        "Insert Tenant N"});
+#line 120
+    testRunner.Then("I get error \"\'Email\' should not be empty.\" when I try to modify tenants like so:", ((string)(null)), table18, "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
+                        "FindEmail",
+                        "Email",
+                        "Name"});
+            table19.AddRow(new string[] {
+                        "tenant-m@server.com",
+                        "tenant-m@server.com",
+                        ""});
+            table19.AddRow(new string[] {
+                        "tenant-n@server.com",
+                        "tenant-m@server.com",
+                        ""});
+#line 125
+    testRunner.Then("I get error \"\'Name\' should not be empty.\" when I try to modify tenants like so:", ((string)(null)), table19, "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
+                        "FindEmail",
+                        "Email",
+                        "Name"});
+            table20.AddRow(new string[] {
+                        "tenant-m@server.com",
+                        "tenant-m@server.com",
+                        "Modified Tenant M"});
+            table20.AddRow(new string[] {
+                        "tenant-n@server.com",
+                        "tenant-m@server.com",
+                        "Modified Tenant N"});
+#line 130
+    testRunner.Then("I get error \"\'Id\' should not be empty.\" when I try to modify tenants without cont" +
+                    "rol properties like so:", ((string)(null)), table20, "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
+                        "FindEmail",
+                        "Email",
+                        "Name"});
+            table21.AddRow(new string[] {
+                        "tenant-m@server.com",
+                        "tenant-m@server.com",
+                        "Modified Tenant M"});
+            table21.AddRow(new string[] {
+                        "tenant-n@server.com",
+                        "tenant-m@server.com",
+                        "Modified Tenant N"});
+#line 135
+    testRunner.Then("I get error \"\'UpdateToken\' should not be empty.\" when I try to modify tenants wit" +
+                    "hout control properties like so:", ((string)(null)), table21, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

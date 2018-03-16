@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using FluentValidation;
+﻿using FluentValidation;
 using Tenants.App.Base;
 
 namespace Tenants.App.Validators
 {
-    public class TenantCommandValidator<T> : AbstractValidator<T> 
-        where T : TenantCommand
+    public class TenantCommandValidator<T> : AbstractValidator<T>
+        where T : TenantDataCommand
     {
         public TenantCommandValidator()
         {

@@ -2,11 +2,11 @@
 
 namespace Tenants.App.Base
 {
-    public abstract class TenantCommand
+    public abstract class TenantDataCommand
     {
         private readonly TenantData _data;
 
-        protected TenantCommand(TenantData data)
+        protected TenantDataCommand(TenantData data)
         {
             _data = data ?? throw new ArgumentNullException(nameof(data));
         }
