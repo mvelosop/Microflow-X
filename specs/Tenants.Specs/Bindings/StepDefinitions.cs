@@ -59,6 +59,22 @@ namespace Tenants.Specs.Bindings
             result.ValidationResults.Should().ContainErrorMessage(TenantRepository.DuplicateByEmailError);
         }
 
+        [Then(@"I get error ""(.*)"" when I try to add these tenants:")]
+        public async Task ThenIGetErrorWhenITryToAddTheseTenants(string errorMessage, Table table)
+        {
+            var dataList = table.CreateSet<TenantData>();
+
+            foreach (var data in dataList)
+            {
+                var command = new AddTenantCommand(data);
+
+                CommandResult<Tenant> result = await GetTenantCommandResult(command);
+
+                result.Succeeded.Should().BeFalse();
+                result.ValidationMessages.Should().Contain(m => m.Contains(errorMessage));
+            }
+        }
+
         [Then(@"I get error ""(.*)"" when trying to modify tenant's email from ""(.*)"" to ""(.*)"":")]
         public async Task ThenIGetWhenTryingToModifyTenantSEmailFromTo(string errorMessage, string findEmail, string modifyEmail)
         {
@@ -183,11 +199,13 @@ namespace Tenants.Specs.Bindings
             return (string)propInfo.GetValue(null);
         }
 
-        private Task<CommandResult<Tenant>> GetTenantCommandResult(IRequest<CommandResult<Tenant>> request)
+        private async Task<CommandResult<Tenant>> GetTenantCommandResult(IRequest<CommandResult<Tenant>> request)
         {
             var mediator = Resolve<IMediator>();
 
-            return mediator.Send(request);
+            var response = await mediator.Send(request);
+
+            return response;
         }
 
         private T Resolve<T>() where T : class

@@ -6,7 +6,7 @@ using Tenants.Core.Model;
 
 namespace Tenants.App.Commands
 {
-    public class ModifyTenantCommand : TenantDataCommand, IRequest<CommandResult<Tenant>>
+    public class ModifyTenantCommand : TenantCommand, IRequest<CommandResult<Tenant>>
     {
         public ModifyTenantCommand(Guid id, TenantData data, byte[] updateToken)
             : base(data)

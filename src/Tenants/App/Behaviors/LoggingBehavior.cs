@@ -1,6 +1,7 @@
-﻿using System.Diagnostics;
-using MediatR;
+﻿using MediatR;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,17 +15,27 @@ namespace Tenants.App.Behaviors
 
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
-            var sw = new Stopwatch();
-
-            sw.Start();
 
             _logger.LogInformation("Handling {RequestName}; value: {@RequestValue}", typeof(TRequest).Name, request);
-            var response = await next();
 
-            sw.Stop();
+            try
+            {
+                var sw = new Stopwatch();
 
-            _logger.LogInformation("Handled {RequestName}; elapsed time (ms): {Time:F3}; value: {@Response}", typeof(TRequest).Name, sw.Elapsed.TotalMilliseconds, response);
-            return response;
+                sw.Start();
+                TResponse response = await next();
+                sw.Stop();
+
+                _logger.LogInformation("Handled {RequestName}; elapsed time (ms): {Time:F3}; value: {@Response}", typeof(TRequest).Name, sw.Elapsed.TotalMilliseconds, response);
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.InnerException, "{ExceptionType} handling {RequestName} (InnerException)", ex.InnerException.GetType().Name, typeof(TRequest).Name);
+
+                return default(TResponse);
+            }
         }
     }
 }

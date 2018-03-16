@@ -79,7 +79,6 @@ Scenario: Scenario - 1.5 - Remove tenant
         | tenant-i@server.com |
         | tenant-j@server.com |
 
-
     And I add tenants:
         | Email               | Name             |
         | tenant-i@server.com | Removed Tenant I |
@@ -92,3 +91,16 @@ Scenario: Scenario - 1.5 - Remove tenant
     Then when querying for "Removed%" tenants I get these:
         | Email               | Name             |
         | tenant-i@server.com | Removed Tenant I |
+
+
+Scenario: Secenario - 1.6 - Validation
+
+    Given these tenants don't exist:
+        | Email               |
+        | tenant-k@server.com |
+        | tenant-l@server.com |
+
+    Then I get error "Email required" when I try to add these tenants:
+        | Name         |
+        | New Tenant K |
+        | New Tenant L |

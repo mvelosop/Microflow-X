@@ -1,30 +1,45 @@
-﻿using System;
+﻿using FluentValidation.Results;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
+
+using ValidationResult = System.ComponentModel.DataAnnotations.ValidationResult;
 
 namespace Domion.Base
 {
     public class CommandResult
     {
-        private static readonly List<ValidationResult> NoResults = new List<ValidationResult>();
+        private static readonly List<ValidationResult> NoValidationResults = new List<ValidationResult>();
+        private static readonly List<ValidationFailure> NoValidationFailures = new List<ValidationFailure>();
 
-        public CommandResult(bool succeeded)
-        {
-            Succeeded = succeeded;
-            ValidationResults = NoResults;
-        }
-
-        public CommandResult(IEnumerable<ValidationResult> validationResults)
+        public CommandResult()
         {
             Succeeded = false;
-            ValidationResults = validationResults.ToList();
+            ValidationResults = NoValidationResults;
+            ValidationFailures = NoValidationFailures;
+        }
+
+        public CommandResult(bool succeeded)
+            : this()
+        {
+            Succeeded = succeeded;
+        }
+
+        public CommandResult(List<ValidationFailure> validationFailures)
+            : this()
+        {
+            ValidationFailures = validationFailures;
+        }
+
+        public CommandResult(List<ValidationResult> validationResults)
+            : this()
+        {
+            ValidationResults = validationResults;
         }
 
         public CommandResult(Exception ex)
+            : this()
         {
-            Succeeded = false;
-            ValidationResults = NoResults;
             Exception = ex;
         }
 
@@ -32,7 +47,30 @@ namespace Domion.Base
 
         public bool Succeeded { get; }
 
+        public List<ValidationFailure> ValidationFailures { get; }
+
+        public List<string> ValidationMessages => GetValidationMessages();
+
         public List<ValidationResult> ValidationResults { get; }
+
+        private List<string> GetValidationMessages()
+        {
+            if (Succeeded) return Enumerable.Empty<string>().ToList();
+
+            var messageList = new List<string>();
+
+            if (ValidationResults != NoValidationResults)
+            {
+                messageList.AddRange(ValidationResults.Select(vr => vr.ErrorMessage).ToList());
+            }
+
+            if (ValidationFailures.Any())
+            {
+                messageList.AddRange(ValidationFailures.Select(vf => vf.ErrorMessage));
+            }
+
+            return messageList;
+        }
     }
 
     public class CommandResult<TResult> : CommandResult
@@ -43,16 +81,19 @@ namespace Domion.Base
             Value = value;
         }
 
-        public CommandResult(IEnumerable<ValidationResult> validationResults)
+        public CommandResult(List<ValidationResult> validationResults)
             : base(validationResults)
         {
-            Value = default(TResult);
+        }
+
+        public CommandResult(List<ValidationFailure> validationFailures)
+            : base(validationFailures)
+        {
         }
 
         public CommandResult(Exception ex)
             : base(ex)
         {
-            Value = default(TResult);
         }
 
         public TResult Value { get; }

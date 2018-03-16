@@ -264,14 +264,14 @@ this.ScenarioSetup(scenarioInfo);
             table11.AddRow(new string[] {
                         "tenant-j@server.com",
                         "Removed Tenant J"});
-#line 83
+#line 82
     testRunner.And("I add tenants:", ((string)(null)), table11, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
                         "FindEmail"});
             table12.AddRow(new string[] {
                         "tenant-j@server.com"});
-#line 88
+#line 87
     testRunner.When("I remove these tenants:", ((string)(null)), table12, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
@@ -280,8 +280,38 @@ this.ScenarioSetup(scenarioInfo);
             table13.AddRow(new string[] {
                         "tenant-i@server.com",
                         "Removed Tenant I"});
-#line 92
+#line 91
     testRunner.Then("when querying for \"Removed%\" tenants I get these:", ((string)(null)), table13, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.FactAttribute(DisplayName="Secenario - 1.6 - Validation")]
+        [Xunit.TraitAttribute("FeatureTitle", "Feature - [1] - Manage Tenants")]
+        [Xunit.TraitAttribute("Description", "Secenario - 1.6 - Validation")]
+        public virtual void Secenario_1_6_Validation()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Secenario - 1.6 - Validation", ((string[])(null)));
+#line 96
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Email"});
+            table14.AddRow(new string[] {
+                        "tenant-k@server.com"});
+            table14.AddRow(new string[] {
+                        "tenant-l@server.com"});
+#line 98
+    testRunner.Given("these tenants don\'t exist:", ((string)(null)), table14, "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name"});
+            table15.AddRow(new string[] {
+                        "New Tenant K"});
+            table15.AddRow(new string[] {
+                        "New Tenant L"});
+#line 103
+    testRunner.Then("I get error \"Email required\" when I try to add these tenants:", ((string)(null)), table15, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

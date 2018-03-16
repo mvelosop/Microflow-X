@@ -5,7 +5,7 @@ using Tenants.Core.Model;
 
 namespace Tenants.App.Commands
 {
-    public class AddTenantCommand : TenantDataCommand, IRequest<CommandResult<Tenant>>
+    public class AddTenantCommand : TenantCommand, IRequest<CommandResult<Tenant>>
     {
         public AddTenantCommand(TenantData data)
             : base(data)
