@@ -55,7 +55,7 @@ namespace Tenants.App.Behaviors
 
             sw.Stop();
 
-            _logger.LogDebug("Validated {RequestName} - elapsed time (ms): {Time:F3}; response: {@Response}", typeof(TRequest).Name, sw.Elapsed.TotalMilliseconds, response);
+            _logger.LogInformation("Validated {RequestName} - elapsed time (ms): {Time:F3}; response: {@Response}", typeof(TRequest).Name, sw.Elapsed.TotalMilliseconds, response);
 
             return response;
         }
