@@ -1,9 +1,7 @@
 ﻿using Domion.Base;
-using Domion.Lib;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
@@ -43,6 +41,22 @@ namespace Domion.Data.Base
         }
 
         /// <summary>
+        ///     Marks an entity for deletion in the DbContext's change tracker
+        /// </summary>
+        protected virtual void Delete(TEntity entity)
+        {
+            _dbSet.Remove(entity);
+        }
+
+        /// <summary>
+        ///     Adds an entity for insertion in the DbContext's change tracker
+        /// </summary>
+        protected virtual void Insert(TEntity entity)
+        {
+            _dbSet.Add(entity);
+        }
+
+        /// <summary>
         ///     The base query, internal use only do not expose out of the concrete class
         /// </summary>
         /// <param name="whereExpression"></param>
@@ -62,70 +76,11 @@ namespace Domion.Data.Base
         }
 
         /// <summary>
-        ///     Marks an entity for deletion in the DbContext's change tracker if it passes the ValidateDelete method.
+        ///     Marks an entity for update in the DbContext's change tracker
         /// </summary>
-        protected virtual async Task<List<ValidationResult>> TryDeleteAsync(TEntity entity)
+        protected virtual void Update(TEntity entity)
         {
-            List<ValidationResult> errors = await ValidateDeleteAsync(entity);
-
-            if (errors.Any())
-            {
-                return errors;
-            }
-
-            _dbSet.Remove(entity);
-
-            return Errors.NoError;
-        }
-
-        /// <summary>
-        ///     Adds an entity for insertion in the DbContext's change tracker if it passes the ValidateSave method.
-        /// </summary>
-        protected virtual async Task<List<ValidationResult>> TryInsertAsync(TEntity entity)
-        {
-            List<ValidationResult> errors = await ValidateSaveAsync(entity);
-
-            if (errors.Any())
-            {
-                return errors;
-            }
-
-            _dbSet.Add(entity);
-
-            return Errors.NoError;
-        }
-
-        /// <summary>
-        ///     Marks an entity for update in the DbContext's change tracker if it passes the ValidateSave method.
-        /// </summary>
-        protected virtual async Task<List<ValidationResult>> TryUpdateAsync(TEntity entity)
-        {
-            List<ValidationResult> errors = await ValidateSaveAsync(entity);
-
-            if (errors.Any())
-            {
-                return errors;
-            }
-
             _dbSet.Update(entity);
-
-            return Errors.NoError;
-        }
-
-        /// <summary>
-        ///     Validates if it's ok to delete the entity from the database.
-        /// </summary>
-        protected virtual async Task<List<ValidationResult>> ValidateDeleteAsync(TEntity model)
-        {
-            return Errors.NoError;
-        }
-
-        /// <summary>
-        ///     Validates if it's ok to save the new or updated entity to the database.
-        /// </summary>
-        protected virtual async Task<List<ValidationResult>> ValidateSaveAsync(TEntity model)
-        {
-            return Errors.NoError;
         }
     }
 }

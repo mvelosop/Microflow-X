@@ -1,10 +1,6 @@
 ﻿using Domion.Base;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Tenants.Core.Model;
@@ -33,11 +29,7 @@ namespace Tenants.App.Commands
                 Name = request.Name
             };
 
-            Debugger.Break();
-
-            List<ValidationResult> validationResults = await _repo.TryInsertAsync(entity);
-
-            if (validationResults.Any()) return new CommandResult<Tenant>(validationResults);
+            _repo.Insert(entity);
 
             await _repo.SaveChangesAsync();
 
