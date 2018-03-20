@@ -30,9 +30,11 @@ namespace Tenants.App.Behaviors
 
                 return response;
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                _logger.LogError(ex.InnerException, "{ExceptionType} logging {RequestName} (InnerException)", ex.InnerException.GetType().Name, typeof(TRequest).Name);
+                Exception ex = e.InnerException ?? e;
+
+                _logger.LogError(ex, "{ExceptionType} logging {RequestName} (InnerException)", ex.GetType().Name, typeof(TRequest).Name);
 
                 return default(TResponse);
             }
