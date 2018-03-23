@@ -28,7 +28,7 @@ namespace Tenants.App.Behaviors
 
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
-            _logger.LogInformation("Validating {RequestName} - validators: {Count}; value: {@RequestValue}", typeof(TRequest).Name, _validators.Length, request);
+            _logger.LogInformation("{RequestName} [Validating] - validators: {Count}; value: {@RequestValue}", typeof(TRequest).Name, _validators.Length, request);
 
             var sw = new Stopwatch();
 
@@ -44,7 +44,7 @@ namespace Tenants.App.Behaviors
 
             if (failures.Any())
             {
-                _logger.LogWarning("Validated {RequestName} - failures: {@Failures}", typeof(TRequest).Name, failures);
+                _logger.LogWarning("{RequestName} [Validated] - failures: {@Failures}", typeof(TRequest).Name, failures);
 
                 response = new TResponse { ValidationFailures = failures };
             }
@@ -55,7 +55,7 @@ namespace Tenants.App.Behaviors
 
             sw.Stop();
 
-            _logger.LogInformation("Validated {RequestName} - elapsed time (ms): {Time:F3}; response: {@Response}", typeof(TRequest).Name, sw.Elapsed.TotalMilliseconds, response);
+            _logger.LogInformation("{RequestName} [Validated] ({Time:F3} ms) - response: {@Response}", typeof(TRequest).Name, sw.Elapsed.TotalMilliseconds, response);
 
             return response;
         }
