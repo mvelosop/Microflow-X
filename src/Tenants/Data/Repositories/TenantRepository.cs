@@ -37,7 +37,7 @@ namespace Tenants.Data.Repositories
             return FindByEmailAsync(email, Guid.Empty);
         }
 
-        public Task<Tenant> FindByEmailAsync(string email, Guid ignoreId)
+        public async Task<Tenant> FindByEmailAsync(string email, Guid ignoreId)
         {
             var query = QueryInternal(t => t.Email == email);
 
@@ -46,12 +46,12 @@ namespace Tenants.Data.Repositories
                 query = query.Where(t => t.Id != ignoreId);
             }
 
-            return query.SingleOrDefaultAsync();
+            return await query.SingleOrDefaultAsync();
         }
 
-        public Task<Tenant> FindByIdAsync(Guid id)
+        public async Task<Tenant> FindByIdAsync(Guid id)
         {
-            return QueryInternal(t => t.Id == id).SingleOrDefaultAsync();
+            return await QueryInternal(t => t.Id == id).SingleOrDefaultAsync();
         }
 
         public new virtual void Insert(Tenant entity)
