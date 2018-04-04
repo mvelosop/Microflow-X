@@ -29,7 +29,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domion.Testing", "lib\Domion.Testing\Domion.Testing.csproj", "{15029DDD-BC52-4219-8A44-8445613029A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domion.Testing", "lib\Domion.Testing\Domion.Testing.csproj", "{15029DDD-BC52-4219-8A44-8445613029A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenants.Web", "src\Tenants.Web\Tenants.Web.csproj", "{1DF92EDE-4953-4CA9-A35B-318F79E45BF8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +63,10 @@ Global
 		{15029DDD-BC52-4219-8A44-8445613029A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{15029DDD-BC52-4219-8A44-8445613029A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{15029DDD-BC52-4219-8A44-8445613029A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DF92EDE-4953-4CA9-A35B-318F79E45BF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DF92EDE-4953-4CA9-A35B-318F79E45BF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DF92EDE-4953-4CA9-A35B-318F79E45BF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DF92EDE-4953-4CA9-A35B-318F79E45BF8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -72,6 +78,7 @@ Global
 		{CF3BA802-A594-41C6-9F6C-C309E1850E82} = {50FF9B5D-47F1-4CFF-B03C-D90FE7286B3A}
 		{7011F34A-1F58-4DB4-804D-7D1CED7E55C6} = {634008AE-3F46-47BD-B81E-547F18A1D2DB}
 		{15029DDD-BC52-4219-8A44-8445613029A9} = {50FF9B5D-47F1-4CFF-B03C-D90FE7286B3A}
+		{1DF92EDE-4953-4CA9-A35B-318F79E45BF8} = {E2E64DF5-3567-427A-93A9-56BBF1D4CFB3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {596A53F3-2525-4DFE-9AE1-E0A16A9170D3}
