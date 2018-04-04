@@ -5,7 +5,6 @@
     <UserSecretsId>aspnet-Tenants.Web-967B33F7-C385-4BA4-8147-1E4FF850B29B</UserSecretsId>
   </PropertyGroup>
 
-
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.0-preview1-final" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.0-preview1-final" PrivateAssets="All" />
