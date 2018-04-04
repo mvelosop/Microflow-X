@@ -136,6 +136,11 @@ gulp.task('copy:vendors', function() {
    .pipe(gulp.dest(paths.dist + 'vendors/'));
 });
 
+gulp.task('copy:wwwroot', function() {
+  return gulp.src('./dist/**/*')
+  .pipe(gulp.dest('../Tenants.Mvc/wwwroot'));
+})
+
 gulp.task('build:dist', function(callback) {
-    runSequence('clean:dist', 'copy:css', 'copy:img', 'copy:js', 'copy:views', 'copy:html', 'copy:vendors', 'vendors', callback);
+    runSequence('clean:dist', 'copy:css', 'copy:img', 'copy:js', 'copy:views', 'copy:html', 'copy:vendors', 'vendors', 'copy:wwwroot', callback);
 });
