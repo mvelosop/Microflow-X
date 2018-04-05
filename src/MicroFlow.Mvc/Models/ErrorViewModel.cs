@@ -1,6 +1,6 @@
 using System;
 
-namespace Tenants.Web.Models
+namespace MicroFlow.Mvc.Models
 {
     public class ErrorViewModel
     {

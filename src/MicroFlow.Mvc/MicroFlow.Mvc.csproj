@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <UserSecretsId>aspnet-Tenants.Web-967B33F7-C385-4BA4-8147-1E4FF850B29B</UserSecretsId>
+    <UserSecretsId>aspnet-MicroFlow.Mvc-967B33F7-C385-4BA4-8147-1E4FF850B29B</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

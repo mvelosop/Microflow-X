@@ -31,7 +31,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domion.Testing", "lib\Domion.Testing\Domion.Testing.csproj", "{15029DDD-BC52-4219-8A44-8445613029A9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenants.Mvc", "src\Tenants.Mvc\Tenants.Mvc.csproj", "{1DF92EDE-4953-4CA9-A35B-318F79E45BF8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroFlow.Mvc", "src\MicroFlow.Mvc\MicroFlow.Mvc.csproj", "{1DF92EDE-4953-4CA9-A35B-318F79E45BF8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
