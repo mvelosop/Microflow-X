@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Tenants.Core.Model;
 using Tenants.Core.Repositories;
-using Tenants.Data.QuerySpecs;
+using Tenants.Infrastructure.Data.QuerySpecs;
 
 namespace Tenants.App.Queries
 {

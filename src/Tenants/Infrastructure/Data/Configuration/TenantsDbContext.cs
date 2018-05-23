@@ -10,7 +10,7 @@
 
 using Microsoft.EntityFrameworkCore;
 
-namespace Tenants.Data.Configuration
+namespace Tenants.Infrastructure.Data.Configuration
 {
     public class TenantsDbContext : DbContext
     {

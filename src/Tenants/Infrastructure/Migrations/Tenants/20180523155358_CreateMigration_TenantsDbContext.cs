@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Tenants.Migrations
+namespace Tenants.Infrastructure.Migrations.Tenants
 {
     public partial class CreateMigration_TenantsDbContext : Migration
     {
@@ -19,7 +19,7 @@ namespace Tenants.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     Email = table.Column<string>(maxLength: 250, nullable: false),
                     Name = table.Column<string>(maxLength: 250, nullable: false),
-                    UpdateToken = table.Column<byte[]>(rowVersion: true, nullable: true)
+                    ConcurrencyToken = table.Column<byte[]>(rowVersion: true, nullable: true)
                 },
                 constraints: table =>
                 {
