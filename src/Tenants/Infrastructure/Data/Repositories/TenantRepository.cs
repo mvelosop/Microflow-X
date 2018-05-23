@@ -8,16 +8,16 @@
 //  Original author: Miguel
 //------------------------------------------------------------------------------
 
-using Domion.Data.Base;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Domion.Data.Base;
+using Microsoft.EntityFrameworkCore;
 using Tenants.Core.Model;
 using Tenants.Core.Repositories;
-using Tenants.Data.Configuration;
+using Tenants.Infrastructure.Data.Configuration;
 
-namespace Tenants.Data.Repositories
+namespace Tenants.Infrastructure.Data.Repositories
 {
     public class TenantRepository : EntityRepository<Tenant>, ITenantRepository
     {

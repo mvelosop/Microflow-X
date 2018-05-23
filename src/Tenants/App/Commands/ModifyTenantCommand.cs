@@ -8,15 +8,15 @@ namespace Tenants.App.Commands
 {
     public class ModifyTenantCommand : TenantDataCommand, IRequest<CommandResult<Tenant>>
     {
-        public ModifyTenantCommand(Guid id, TenantData data, byte[] updateToken)
+        public ModifyTenantCommand(Guid id, TenantData data, byte[] concurrencyToken)
             : base(data)
         {
             Id = id;
-            UpdateToken = updateToken;
+            ConcurrencyToken = concurrencyToken;
         }
 
         public Guid Id { get; }
 
-        public byte[] UpdateToken { get; }
+        public byte[] ConcurrencyToken { get; }
     }
 }

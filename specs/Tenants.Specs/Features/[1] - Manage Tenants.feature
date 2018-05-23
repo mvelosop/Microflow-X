@@ -93,7 +93,7 @@ Scenario: Scenario - 1.5 - Remove tenant
         | tenant-i@server.com | Removed Tenant I |
 
 
-Scenario: Secenario - 1.6 - Validation
+Scenario: Scenario - 1.6 - Validation
 
     Given these tenants don't exist:
         | Email               |
@@ -108,9 +108,9 @@ Scenario: Secenario - 1.6 - Validation
         | tenant-n@server.com | Insert Tenant N |
 
     Then I get error "'Email' should not be empty." when I try to add these tenants:
-        | Name         |
-        | New Tenant K |
-        | New Tenant L |
+        | Name         | Email |
+        | New Tenant K |       |
+        | New Tenant L |       |
 
     Then I get error "'Name' should not be empty." when I try to add these tenants:
         | Email               | Name |
@@ -132,7 +132,7 @@ Scenario: Secenario - 1.6 - Validation
         | tenant-m@server.com | tenant-m@server.com | Modified Tenant M |
         | tenant-n@server.com | tenant-m@server.com | Modified Tenant N |
 
-    Then I get error "'UpdateToken' should not be empty." when I try to modify tenants without control properties like so:
+    Then I get error "'ConcurrencyToken' should not be empty." when I try to modify tenants without control properties like so:
         | FindEmail           | Email               | Name              |
         | tenant-m@server.com | tenant-m@server.com | Modified Tenant M |
         | tenant-n@server.com | tenant-m@server.com | Modified Tenant N |
@@ -142,7 +142,7 @@ Scenario: Secenario - 1.6 - Validation
         | tenant-m@server.com | 
         | tenant-n@server.com | 
 
-    Then I get error "'UpdateToken' should not be empty." when I try to remove tenants without control properties like so:
+    Then I get error "'ConcurrencyToken' should not be empty." when I try to remove tenants without control properties like so:
         | FindEmail           | 
         | tenant-m@server.com | 
         | tenant-n@server.com | 

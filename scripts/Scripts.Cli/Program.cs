@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
-using Tenants.Data.Configuration;
+using Tenants.Infrastructure.Data.Configuration;
 
 namespace Scripts.Cli
 {
@@ -11,7 +11,7 @@ namespace Scripts.Cli
 			Console.WriteLine("Host for EF scripts");
 
 			string connectionString =
-				"Server=localhost; Initial Catalog=MicroFlow-X.Cli; Trusted_Connection=true; MultipleActiveResultSets=true;";
+				"Server=(localdb)\\MSSQLLocalDB; Database=MicroFlow-X.Cli; Trusted_Connection=true; MultipleActiveResultSets=true;";
 
 			var optionsBuilder = new DbContextOptionsBuilder<TenantsDbContext>();
 

@@ -9,7 +9,7 @@ using System.IO;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using Serilog;
-using Tenants.Setup;
+using Tenants.Infrastructure.Setup;
 
 namespace Tenants.Specs
 {

@@ -7,14 +7,14 @@ namespace Tenants.App.Commands
 {
     public class RemoveTenantCommand : IRequest<CommandResult>
     {
-        public RemoveTenantCommand(Guid id, byte[] updateToken)
+        public RemoveTenantCommand(Guid id, byte[] concurrencyToken)
         {
             Id = id;
-            UpdateToken = updateToken;
+            ConcurrencyToken = concurrencyToken;
         }
 
         public Guid Id { get; }
 
-        public byte[] UpdateToken { get; }
+        public byte[] ConcurrencyToken { get; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using Tenants.Data.Configuration;
+using Tenants.Infrastructure.Data.Configuration;
 
 namespace Scripts.Cli
 {
