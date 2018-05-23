@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
-using Tenants.Data.Configuration;
+using Tenants.Infrastructure.Data.Configuration;
 
-namespace Tenants.Setup
+namespace Tenants.Infrastructure.Setup
 {
     public class TenantsDbSetup
     {

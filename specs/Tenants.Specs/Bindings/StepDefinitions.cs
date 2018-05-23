@@ -14,7 +14,7 @@ using Tenants.App.Commands;
 using Tenants.App.Queries;
 using Tenants.Core.Model;
 using Tenants.Core.Repositories;
-using Tenants.Data.Repositories;
+using Tenants.Infrastructure.Data.Repositories;
 using Tenants.Specs.Helpers;
 
 namespace Tenants.Specs.Bindings
@@ -87,7 +87,7 @@ namespace Tenants.Specs.Bindings
             {
                 var entity = await repo.FindByEmailAsync(data.FindEmail);
 
-                var command = new ModifyTenantCommand(entity.Id, data, entity.UpdateToken);
+                var command = new ModifyTenantCommand(entity.Id, data, entity.ConcurrencyToken);
 
                 CommandResult<Tenant> result = await GetTenantCommandResult(command);
 
@@ -103,9 +103,9 @@ namespace Tenants.Specs.Bindings
 
             foreach (TenantSpecData data in dataList)
             {
-                var updateToken = new byte[8];
+                var concurrencyToken = new byte[8];
 
-                var command = new ModifyTenantCommand(Guid.Empty, data, updateToken);
+                var command = new ModifyTenantCommand(Guid.Empty, data, concurrencyToken);
 
                 CommandResult<Tenant> result = await GetTenantCommandResult(command);
 
@@ -121,9 +121,9 @@ namespace Tenants.Specs.Bindings
 
             foreach (TenantSpecData data in dataList)
             {
-                var updateToken = new byte[8];
+                var concurrencyToken = new byte[8];
 
-                var command = new RemoveTenantCommand(Guid.Empty, updateToken);
+                var command = new RemoveTenantCommand(Guid.Empty, concurrencyToken);
 
                 CommandResult result = await GetTenantCommandResult(command);
 
@@ -144,7 +144,7 @@ namespace Tenants.Specs.Bindings
             var data = TenantData.From(entity);
             data.Email = modifyEmail;
 
-            var command = new ModifyTenantCommand(entity.Id, data, entity.UpdateToken);
+            var command = new ModifyTenantCommand(entity.Id, data, entity.ConcurrencyToken);
 
             CommandResult<Tenant> result = await GetTenantCommandResult(command);
 
@@ -193,7 +193,7 @@ namespace Tenants.Specs.Bindings
             {
                 var entity = await repo.FindByEmailAsync(data.FindEmail);
 
-                var result = await mediator.Send(new ModifyTenantCommand(entity.Id, data, entity.UpdateToken));
+                var result = await mediator.Send(new ModifyTenantCommand(entity.Id, data, entity.ConcurrencyToken));
 
                 result.ValidationMessages.Should().BeEmpty();
                 result.Succeeded.Should().BeTrue();
@@ -213,7 +213,7 @@ namespace Tenants.Specs.Bindings
             {
                 var entity = await repo.FindByEmailAsync(data.FindEmail);
 
-                var result = await mediator.Send(new RemoveTenantCommand(entity.Id, entity.UpdateToken));
+                var result = await mediator.Send(new RemoveTenantCommand(entity.Id, entity.ConcurrencyToken));
 
                 result.ValidationMessages.Should().BeEmpty();
                 result.Succeeded.Should().BeTrue();

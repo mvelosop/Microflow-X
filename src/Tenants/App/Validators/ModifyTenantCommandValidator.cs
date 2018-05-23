@@ -16,14 +16,13 @@ namespace Tenants.App.Validators
             _repo = repo;
 
             RuleFor(c => c.Id).NotEmpty();
-            RuleFor(c => c.UpdateToken).NotEmpty();
-            RuleFor(c => c.UpdateToken).Must(NotBeEmpty).WithMessage("'UpdateToken' should not be empty.");
+            RuleFor(c => c.ConcurrencyToken).Must(NotBeEmpty).WithMessage("'ConcurrencyToken' should not be empty.");
             RuleFor(c => c.Email).MustAsync(NotExist).WithMessage("'Email' should not exist.");
         }
 
-        private bool NotBeEmpty(byte[] updateToken)
+        private bool NotBeEmpty(byte[] concurrencyToken)
         {
-            return updateToken.Length > 0 && updateToken.Any(v => v > 0);
+            return concurrencyToken.Length > 0 && concurrencyToken.Any(v => v > 0);
         }
 
         private async Task<bool> NotExist(ModifyTenantCommand command, string email, CancellationToken cancellationToken)

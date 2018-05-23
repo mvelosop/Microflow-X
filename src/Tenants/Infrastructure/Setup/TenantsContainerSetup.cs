@@ -1,8 +1,7 @@
 ﻿using Autofac;
 using FluentValidation;
-using MediatR;
 
-namespace Tenants.Setup
+namespace Tenants.Infrastructure.Setup
 {
     public class TenantsContainerSetup : Module
     {

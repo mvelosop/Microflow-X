@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
 using Domion.Base;
 using Tenants.Core.Model;
 
-namespace Tenants.Data.QuerySpecs
+namespace Tenants.Infrastructure.Data.QuerySpecs
 {
     public class TenantQuerySpec : IQuerySpec<Tenant>
     {

@@ -25,6 +25,6 @@ namespace Tenants.Core.Model
         [MaxLength(250)] // Default string length
         public virtual string Name { get; set; }
 
-        public virtual Byte[] UpdateToken { get; set; }
+        public virtual Byte[] ConcurrencyToken { get; set; }
     }
 }

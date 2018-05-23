@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Tenants.Core.Model;
 
-namespace Tenants.Data.Configuration
+namespace Tenants.Infrastructure.Data.Configuration
 {
     // 6-2. Add TenantConfiguration
     //-----------------------------
@@ -25,7 +25,7 @@ namespace Tenants.Data.Configuration
 
             builder.HasKey(t => t.Id);
 
-            builder.Property(t => t.UpdateToken)
+            builder.Property(t => t.ConcurrencyToken)
                 .IsRowVersion();
 
             // Indexes

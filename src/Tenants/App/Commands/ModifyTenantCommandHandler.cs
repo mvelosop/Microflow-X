@@ -25,7 +25,7 @@ namespace Tenants.App.Commands
 
             entity.Email = request.Email;
             entity.Name = request.Name;
-            entity.UpdateToken = request.UpdateToken;
+            entity.ConcurrencyToken = request.ConcurrencyToken;
 
             _repo.Update(entity);
 

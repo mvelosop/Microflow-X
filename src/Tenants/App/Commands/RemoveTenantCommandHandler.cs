@@ -23,7 +23,7 @@ namespace Tenants.App.Commands
 
             if (entity == null) return new CommandResult(new InvalidOperationException($"Tenant not found (Id={request.Id})"));
 
-            entity.UpdateToken = request.UpdateToken;
+            entity.ConcurrencyToken = request.ConcurrencyToken;
 
             _repo.Delete(entity);
 
